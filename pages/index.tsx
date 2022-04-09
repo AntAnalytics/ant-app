@@ -1,8 +1,12 @@
 import type { NextPage } from 'next';
-import MainNavBar from '../components/headers/mainNavBar';
+import PageLayout from '../layouts/PageLayout';
 
 const Home: NextPage = () => {
-  return <MainNavBar />;
+  return (
+    <PageLayout>
+      <h1>Hello world</h1>
+    </PageLayout>
+  );
 };
 
 export default Home;
