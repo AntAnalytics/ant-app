@@ -1,10 +1,15 @@
 import type { NextPage } from 'next';
+import WhyUs from '../components/features/whyUs';
+import MainHero from '../components/heros/main';
+import OurClientCTA from '../components/ctas/ourClient';
 import PageLayout from '../layouts/PageLayout';
 
 const Home: NextPage = () => {
   return (
     <PageLayout>
-      <h1>Hello world</h1>
+      <MainHero />
+      <WhyUs />
+      <OurClientCTA />
     </PageLayout>
   );
 };
