@@ -12,10 +12,10 @@ const Home: NextPage = () => {
         </Link>
         / About us
       </HeroHeader>
-      <section>
-        <div className='flex flex-col'>
-          <div className='flex'></div>
-          <div className='flex'>
+      <section className='container mx-auto py-10'>
+        <div className='flex flex-row'>
+          <div className='flex flex-1'>x</div>
+          <div className='flex flex-1 flex-col'>
             <h2>About us</h2>
             <h3>The Ant Analytics</h3>
             <p>
