@@ -6,6 +6,8 @@ import PageLayout from '../layouts/PageLayout';
 import MainNavBar from '../components/headers/mainNavBar';
 import NewProduct from '../components/banners/newProduct';
 import AboutUsSection from 'components/sections/aboutUs';
+import CTASection from 'components/sections/CTA';
+import MainFooter from 'components/footers/main';
 
 const Home: NextPage = () => {
   return (
@@ -16,6 +18,8 @@ const Home: NextPage = () => {
       <AboutUsSection />
       <WhyUs />
       <OurClientCTA />
+      <CTASection />
+      <MainFooter />
     </PageLayout>
   );
 };
