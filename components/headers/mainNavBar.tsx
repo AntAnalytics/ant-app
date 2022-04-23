@@ -1,3 +1,4 @@
+/* This example requires Tailwind CSS v2.0+ */
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import {
@@ -100,8 +101,8 @@ function classNames(...classes: string[]) {
 export default function MainNavBar() {
   return (
     <Popover className='relative bg-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6'>
-        <div className='flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10'>
+      <div className='mx-auto max-w-7xl px-4 sm:px-6'>
+        <div className='flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10'>
           <div className='flex justify-start lg:w-0 lg:flex-1'>
             <a href='#'>
               <span className='sr-only'>Workflow</span>
@@ -112,20 +113,20 @@ export default function MainNavBar() {
               />
             </a>
           </div>
-          <div className='-mr-2 -my-2 md:hidden'>
-            <Popover.Button className='bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
+          <div className='-my-2 -mr-2 md:hidden'>
+            <Popover.Button className='inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
               <span className='sr-only'>Open menu</span>
               <MenuIcon className='h-6 w-6' aria-hidden='true' />
             </Popover.Button>
           </div>
-          <Popover.Group as='nav' className='hidden md:flex space-x-10'>
+          <Popover.Group as='nav' className='hidden space-x-10 md:flex'>
             <Popover className='relative'>
               {({ open }) => (
                 <>
                   <Popover.Button
                     className={classNames(
                       open ? 'text-gray-900' : 'text-gray-500',
-                      'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                     )}
                   >
                     <span>Solutions</span>
@@ -147,17 +148,17 @@ export default function MainNavBar() {
                     leaveFrom='opacity-100 translate-y-0'
                     leaveTo='opacity-0 translate-y-1'
                   >
-                    <Popover.Panel className='absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2'>
-                      <div className='rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden'>
+                    <Popover.Panel className='absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2'>
+                      <div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5'>
                         <div className='relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8'>
                           {solutions.map((item) => (
                             <a
                               key={item.name}
                               href={item.href}
-                              className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                              className='-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50'
                             >
                               <item.icon
-                                className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                                className='h-6 w-6 flex-shrink-0 text-indigo-600'
                                 aria-hidden='true'
                               />
                               <div className='ml-4'>
@@ -171,15 +172,15 @@ export default function MainNavBar() {
                             </a>
                           ))}
                         </div>
-                        <div className='px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8'>
+                        <div className='space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8'>
                           {callsToAction.map((item) => (
                             <div key={item.name} className='flow-root'>
                               <a
                                 href={item.href}
-                                className='-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100'
+                                className='-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100'
                               >
                                 <item.icon
-                                  className='flex-shrink-0 h-6 w-6 text-gray-400'
+                                  className='h-6 w-6 flex-shrink-0 text-gray-400'
                                   aria-hidden='true'
                                 />
                                 <span className='ml-3'>{item.name}</span>
@@ -213,7 +214,7 @@ export default function MainNavBar() {
                   <Popover.Button
                     className={classNames(
                       open ? 'text-gray-900' : 'text-gray-500',
-                      'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                      'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                     )}
                   >
                     <span>More</span>
@@ -235,17 +236,17 @@ export default function MainNavBar() {
                     leaveFrom='opacity-100 translate-y-0'
                     leaveTo='opacity-0 translate-y-1'
                   >
-                    <Popover.Panel className='absolute z-10 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-md sm:px-0'>
-                      <div className='rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden'>
+                    <Popover.Panel className='absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0'>
+                      <div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5'>
                         <div className='relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8'>
                           {resources.map((item) => (
                             <a
                               key={item.name}
                               href={item.href}
-                              className='-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50'
+                              className='-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50'
                             >
                               <item.icon
-                                className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                                className='h-6 w-6 flex-shrink-0 text-indigo-600'
                                 aria-hidden='true'
                               />
                               <div className='ml-4'>
@@ -259,16 +260,16 @@ export default function MainNavBar() {
                             </a>
                           ))}
                         </div>
-                        <div className='px-5 py-5 bg-gray-50 sm:px-8 sm:py-8'>
+                        <div className='bg-gray-50 px-5 py-5 sm:px-8 sm:py-8'>
                           <div>
-                            <h3 className='text-sm tracking-wide font-medium text-gray-500 uppercase'>
+                            <h3 className='text-sm font-medium uppercase tracking-wide text-gray-500'>
                               Recent Posts
                             </h3>
                             <ul role='list' className='mt-4 space-y-4'>
                               {recentPosts.map((post) => (
                                 <li
                                   key={post.id}
-                                  className='text-base truncate'
+                                  className='truncate text-base'
                                 >
                                   <a
                                     href={post.href}
@@ -298,7 +299,7 @@ export default function MainNavBar() {
               )}
             </Popover>
           </Popover.Group>
-          <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
+          <div className='hidden items-center justify-end md:flex md:flex-1 lg:w-0'>
             <a
               href='#'
               className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
@@ -307,7 +308,7 @@ export default function MainNavBar() {
             </a>
             <a
               href='#'
-              className='ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
+              className='ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700'
             >
               Sign up
             </a>
@@ -326,10 +327,10 @@ export default function MainNavBar() {
       >
         <Popover.Panel
           focus
-          className='absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden'
+          className='absolute inset-x-0 top-0 origin-top-right transform p-2 transition md:hidden'
         >
-          <div className='rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50'>
-            <div className='pt-5 pb-6 px-5'>
+          <div className='divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5'>
+            <div className='px-5 pt-5 pb-6'>
               <div className='flex items-center justify-between'>
                 <div>
                   <img
@@ -339,7 +340,7 @@ export default function MainNavBar() {
                   />
                 </div>
                 <div className='-mr-2'>
-                  <Popover.Button className='bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
+                  <Popover.Button className='inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'>
                     <span className='sr-only'>Close menu</span>
                     <XIcon className='h-6 w-6' aria-hidden='true' />
                   </Popover.Button>
@@ -351,10 +352,10 @@ export default function MainNavBar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      className='-m-3 p-3 flex items-center rounded-md hover:bg-gray-50'
+                      className='-m-3 flex items-center rounded-md p-3 hover:bg-gray-50'
                     >
                       <item.icon
-                        className='flex-shrink-0 h-6 w-6 text-indigo-600'
+                        className='h-6 w-6 flex-shrink-0 text-indigo-600'
                         aria-hidden='true'
                       />
                       <span className='ml-3 text-base font-medium text-gray-900'>
@@ -365,7 +366,7 @@ export default function MainNavBar() {
                 </nav>
               </div>
             </div>
-            <div className='py-6 px-5 space-y-6'>
+            <div className='space-y-6 py-6 px-5'>
               <div className='grid grid-cols-2 gap-y-4 gap-x-8'>
                 <a
                   href='#'
@@ -393,7 +394,7 @@ export default function MainNavBar() {
               <div>
                 <a
                   href='#'
-                  className='w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700'
+                  className='flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700'
                 >
                   Sign up
                 </a>
