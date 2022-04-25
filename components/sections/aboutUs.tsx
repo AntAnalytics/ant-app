@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FunctionComponent } from 'react';
 
 interface AboutUsSectionProps {}
@@ -35,7 +36,9 @@ const AboutUsSection: FunctionComponent<AboutUsSectionProps> = () => {
             exceed the global standards and industry best practices.
           </p>
           <button className='inline-flex w-40 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-base font-medium text-white hover:bg-indigo-700'>
-            Read more
+            <Link href='/about-us'>
+              <a>Read more</a>
+            </Link>
           </button>
         </div>
       </div>

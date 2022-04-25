@@ -1,11 +1,10 @@
 import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
 import HeroHeader from 'components/common/HeroHeader';
-import Link from 'next/link';
 import Image from 'next/image';
 import TwoColWithImage from 'components/common/twoColwithImage';
 
-const Home: NextPage = () => {
+const AboutUs: NextPage = () => {
   return (
     <PageLayout>
       <HeroHeader title='About us'></HeroHeader>
@@ -79,4 +78,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default AboutUs;
