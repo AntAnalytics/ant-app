@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react';
 
-interface TwoColWithImageProps {
+interface TwoColumnWithImageProps {
   imageComp: JSX.Element;
   rtl?: boolean;
 }
 
-const TwoColWithImage: FunctionComponent<TwoColWithImageProps> = ({
+const TwoColumnWithImage: FunctionComponent<TwoColumnWithImageProps> = ({
   imageComp,
   rtl,
   children,
@@ -20,4 +20,4 @@ const TwoColWithImage: FunctionComponent<TwoColWithImageProps> = ({
   );
 };
 
-export default TwoColWithImage;
+export default TwoColumnWithImage;

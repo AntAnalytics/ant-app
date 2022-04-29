@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
 import HeroHeader from 'components/common/HeroHeader';
 import Image from 'next/image';
-import TwoColWithImage from 'components/common/twoColWithImage';
+import TwoColWithImage from 'components/common/TwoColumnWithImage';
 
 const DAS: NextPage = () => {
   return (
