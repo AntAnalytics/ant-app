@@ -9,7 +9,7 @@ const DAS: NextPage = () => {
     <PageLayout>
       <HeroHeader title='Digital Auditing system' />
       <TwoColWithImage
-        imageCom={
+        imageComp={
           <Image
             src={'/assets/images/DAS.jpeg'}
             alt='chef auditing reports'

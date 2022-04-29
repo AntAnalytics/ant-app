@@ -9,7 +9,7 @@ const SD: NextPage = () => {
     <PageLayout>
       <HeroHeader title='Smart Documentation' />
       <TwoColWithImage
-        imageCom={
+        imageComp={
           <Image
             src={'/assets/images/SD.jpeg'}
             alt='chef auditing reports'

@@ -9,7 +9,7 @@ const AboutUs: NextPage = () => {
     <PageLayout>
       <HeroHeader title='About us'></HeroHeader>
       <TwoColWithImage
-        imageCom={
+        imageComp={
           <Image
             src={
               '/assets/images/asian-businessmen-and-businesswomen-meeting-using-W3QY5ES.jpeg'
