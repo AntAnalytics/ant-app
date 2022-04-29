@@ -13,15 +13,16 @@ export default function Contact() {
               Get in touch
             </h2>
             <p className='mt-3 text-lg leading-6 text-gray-500'>
-              Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat
-              massa dictumst amet. Sapien tortor lacus arcu.
+              Do not hesitate to ask a question
             </p>
             <dl className='mt-8 text-base text-gray-500'>
               <div>
                 <dt className='sr-only'>Postal address</dt>
                 <dd>
-                  <p>742 Evergreen Terrace</p>
-                  <p>Springfield, OR 12345</p>
+                  <p>
+                    Corp Office Address- 1st Floor, Global Foyer Mall, Golf
+                    Course Road, Sector 43, Gurugram, Haryana 122002
+                  </p>
                 </dd>
               </div>
               <div className='mt-6'>
@@ -31,7 +32,10 @@ export default function Contact() {
                     className='h-6 w-6 flex-shrink-0 text-gray-400'
                     aria-hidden='true'
                   />
-                  <span className='ml-3'>+1 (555) 123-4567</span>
+                  <span className='ml-3 flex flex-col'>
+                    <a href='tel:+91 8929495515'>+91 8929495515</a>
+                    <a href='tel:+91 9971719843'>+91 9971719843</a>
+                  </span>
                 </dd>
               </div>
               <div className='mt-3'>
@@ -41,17 +45,24 @@ export default function Contact() {
                     className='h-6 w-6 flex-shrink-0 text-gray-400'
                     aria-hidden='true'
                   />
-                  <span className='ml-3'>support@example.com</span>
+                  <span className='ml-3 flex flex-col '>
+                    <a href='mailto:hello@theantanalytics.com'>
+                      hello@theantanalytics.com
+                    </a>
+                    <a href='mailto:samiksha@theantanalytics.com'>
+                      samiksha@theantanalytics.com
+                    </a>
+                  </span>
                 </dd>
               </div>
             </dl>
-            <p className='mt-6 text-base text-gray-500'>
+            {/* <p className='mt-6 text-base text-gray-500'>
               Looking for careers?{' '}
               <a href='#' className='font-medium text-gray-700 underline'>
                 View all job openings
               </a>
               .
-            </p>
+            </p> */}
           </div>
         </div>
         <div className='bg-white py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12'>

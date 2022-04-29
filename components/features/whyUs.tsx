@@ -33,7 +33,7 @@ export default function WhyUs() {
           Why Choose us
         </h2>
         <p className='mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
-          A better way to send money
+          What we do ?
         </p>
 
         <div className='mt-12'>

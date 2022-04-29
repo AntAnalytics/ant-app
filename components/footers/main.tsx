@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { SVGProps } from 'react';
 
 /* This example requires Tailwind CSS v2.0+ */
@@ -100,9 +101,10 @@ export default function MainFooter() {
       <div className='mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:py-16 lg:px-8'>
         <div className='xl:grid xl:grid-cols-3 xl:gap-8'>
           <div className='space-y-8 xl:col-span-1'>
-            <img
-              className='h-10'
-              src='https://tailwindui.com/img/logos/workflow-mark-gray-300.svg'
+            <Image
+              height={90}
+              width={90}
+              src='/TAA-Logo.png'
               alt='Company name'
             />
             <p className='text-base text-gray-500'>
@@ -199,7 +201,7 @@ export default function MainFooter() {
         </div>
         <div className='mt-12 border-t border-gray-200 pt-8'>
           <p className='text-base text-gray-400 xl:text-center'>
-            &copy; 2020 Workflow, Inc. All rights reserved.
+            &copy; 2022 The Ant Analytics, Pvt. Ltd. All rights reserved.
           </p>
         </div>
       </div>

@@ -2,12 +2,12 @@ import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
 import HeroHeader from 'components/common/HeroHeader';
 import Image from 'next/image';
-import TwoColWithImage from 'components/common/twoColwithImage';
+import TwoColWithImage from 'components/common/twoColWithImage';
 
 const DAS: NextPage = () => {
   return (
     <PageLayout>
-      <HeroHeader title='Digital Auditing system'></HeroHeader>
+      <HeroHeader title='Digital Auditing system' />
       <TwoColWithImage
         imageCom={
           <Image
