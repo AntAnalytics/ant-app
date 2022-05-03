@@ -1,42 +1,56 @@
 import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
 import checkList1 from 'src/checklists/checkList1';
+import { useForm } from 'react-hook-form';
 
 const answerOptions = [
-  { id: 'yes', title: 'Yes' },
-  { id: 'no', title: 'No' },
-  { id: 'na', title: 'N/A' },
+  { id: 'yes', title: 'Yes', score: 1 },
+  { id: 'no', title: 'No', score: 0 },
+  { id: 'na', title: 'N/A', score: 1 },
 ];
 
 const CheckListPage: NextPage = () => {
-  console.log(checkList1.length);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => console.log(Object.values(data));
   return (
     <PageLayout>
       <section className='container mx-auto py-10'>
-        <form action=''>
-          {checkList1.map((section) => (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {checkList1.map((section, sIndex) => (
             <div key={section.id} className='my-8 p-4'>
               <h2 className='text-3xl font-bold text-indigo-600'>
                 {section.title}
               </h2>
-              {section.questions.map((q) => (
+              {section.questions.map((q, qIndex) => (
                 <div
                   key={q.id}
                   className='my-1 flex flex-col justify-between border-t-2 md:flex-row'
                 >
-                  <h3 className='col-span-2 text-2xl'>{q.question}</h3>
+                  <h3 className='col-span-2 text-2xl'>
+                    <span className='mr-4'>{qIndex + 1})</span>
+                    {q.question}
+                  </h3>
                   <div className='flex space-x-8'>
                     {answerOptions.map((answerOption) => (
                       <div key={answerOption.id} className='flex items-center '>
                         <input
-                          id={answerOption.id}
-                          name={q.question}
+                          id={q.id + '/' + answerOption.id}
                           type='radio'
-                          //   defaultChecked={answerOption.id === 'email'}
+                          defaultChecked={answerOption.score === 0}
+                          value={answerOption.title}
                           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                          {...register(q.id.toString(), {
+                            // required: true,
+                          })}
                         />
                         <label
-                          htmlFor={answerOption.id}
+                          htmlFor={q.id + '/' + answerOption.id}
                           className='ml-3 block text-sm font-medium text-gray-700'
                         >
                           {answerOption.title}
