@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
-import checkList1 from 'src/checklists/checkList1';
+import test from 'src/checklists/test';
 import { useForm } from 'react-hook-form';
 
 const answerOptions = [
@@ -28,9 +28,9 @@ const CheckListPage: NextPage = () => {
     <PageLayout>
       <section className='container mx-auto py-10'>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {checkList1.map((section, sIndex) => (
+          {test.map((section, sIndex) => (
             <div key={section.id} className='my-8 p-4'>
-              <h2 className='text-3xl font-bold text-indigo-600'>
+              <h2 className='text-xl font-bold text-indigo-600'>
                 {section.title}
               </h2>
               {section.questions.map((q, qIndex) => (
@@ -38,7 +38,7 @@ const CheckListPage: NextPage = () => {
                   key={q.id}
                   className='my-1 flex flex-col justify-between border-t-2 md:flex-row'
                 >
-                  <h3 className='col-span-2 text-2xl'>
+                  <h3 className='col-span-2 text-base'>
                     <span className='mr-4'>{qIndex + 1})</span>
                     {q.question}
                   </h3>
@@ -48,16 +48,15 @@ const CheckListPage: NextPage = () => {
                         <input
                           id={q.id + '/' + answerOption.id}
                           type='radio'
-                          defaultChecked={answerOption.score === 0}
                           value={answerOption.title}
                           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
                           {...register(q.id.toString(), {
-                            // required: true,
+                            required: true,
                           })}
                         />
                         <label
                           htmlFor={q.id + '/' + answerOption.id}
-                          className='ml-3 block text-sm font-medium text-gray-700'
+                          className='ml-3 block select-none text-sm font-medium text-gray-700'
                         >
                           {answerOption.title}
                         </label>
