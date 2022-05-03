@@ -17,7 +17,13 @@ const CheckListPage: NextPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => console.log(Object.values(data));
+  const onSubmit = (data: any) => {
+    let score = 0;
+    Object.values(data).forEach((answer) => {
+      if (answer !== 'No') score++;
+    });
+    console.log({ score });
+  };
   return (
     <PageLayout>
       <section className='container mx-auto py-10'>
