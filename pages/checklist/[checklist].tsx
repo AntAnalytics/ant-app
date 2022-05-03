@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import PageLayout from 'layouts/PageLayout';
-import test from 'src/checklists/test';
 import { useForm } from 'react-hook-form';
+import test from 'src/checklists/test';
 
 const answerOptions = [
   { id: 'yes', title: 'Yes', score: 1 },
