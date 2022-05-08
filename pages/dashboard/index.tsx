@@ -11,7 +11,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
       {status === 'authenticated' ? (
         <div>
           <h2 className='text-2xl font-semibold'>
-            welcome {session.user?.name}
+            welcome {session?.user?.name}
           </h2>
           <p>Signed in as {session?.user?.email}</p>
         </div>
