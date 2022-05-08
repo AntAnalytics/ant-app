@@ -11,7 +11,7 @@ const DashBoardPage: NextPage<DashBoardPageProps> = () => {
     <PageLayout>
       {status === 'authenticated' ? (
         <div>
-          <p>Signed in as {session.user?.email}</p>
+          <p>Signed in as {session?.user?.email}</p>
         </div>
       ) : (
         <div>
