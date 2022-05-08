@@ -1,15 +1,15 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import PageLayout from 'layouts/PageLayout';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn, getSession, useSession } from 'next-auth/react';
 
-interface DashBoardPageProps {}
-
-const DashBoardPage: NextPage<DashBoardPageProps> = () => {
+function DashBoardPage({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) {
   const { data: session, status } = useSession();
-  //   console.log({ session });
+  console.log({ session });
   return (
     <PageLayout>
-      {status === 'authenticated' ? (
+      {session ? (
         <div>
           <p>Signed in as {session?.user?.email}</p>
         </div>
@@ -20,6 +20,25 @@ const DashBoardPage: NextPage<DashBoardPageProps> = () => {
       )}
     </PageLayout>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      // session,
+    },
+  };
 };
 
 export default DashBoardPage;
