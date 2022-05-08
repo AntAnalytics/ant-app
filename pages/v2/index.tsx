@@ -16,6 +16,7 @@ import {
   UsersIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { signIn } from 'next-auth/react';
 const features = [
   {
     name: 'Unlimited Inboxes',
@@ -128,12 +129,14 @@ export default function HomeV2() {
                 </p>
                 <div className='mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center'>
                   <div className='space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0'>
-                    <a
-                      href='#'
+                    <button
+                      onClick={() =>
+                        signIn('google', { callbackUrl: '/dashboard' })
+                      }
                       className='flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8'
                     >
                       Get started
-                    </a>
+                    </button>
                     <a
                       href='#'
                       className='flex items-center justify-center rounded-md border border-transparent bg-indigo-500 bg-opacity-60 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-opacity-70 sm:px-8'
@@ -223,12 +226,14 @@ export default function HomeV2() {
                       pharetra.
                     </p>
                     <div className='mt-6'>
-                      <a
-                        href='#'
+                      <button
+                        onClick={() =>
+                          signIn('google', { callbackUrl: '/dashboard' })
+                        }
                         className='inline-flex rounded-md border border-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 text-base font-medium text-white shadow-sm hover:from-purple-700 hover:to-indigo-700'
                       >
                         Get started
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -293,12 +298,14 @@ export default function HomeV2() {
                       pharetra.
                     </p>
                     <div className='mt-6'>
-                      <a
-                        href='#'
+                      <button
+                        onClick={() =>
+                          signIn('google', { callbackUrl: '/dashboard' })
+                        }
                         className='inline-flex rounded-md border border-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-origin-border px-4 py-2 text-base font-medium text-white shadow-sm hover:from-purple-700 hover:to-indigo-700'
                       >
                         Get started
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -421,12 +428,12 @@ export default function HomeV2() {
               >
                 Learn more
               </a>
-              <a
-                href='#'
+              <button
+                onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
                 className='flex items-center justify-center rounded-md border border-transparent bg-indigo-50 px-4 py-3 text-base font-medium text-indigo-800 shadow-sm hover:bg-indigo-100'
               >
                 Get started
-              </a>
+              </button>
             </div>
           </div>
         </div>

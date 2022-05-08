@@ -9,7 +9,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
   console.log({ session });
   return (
     <PageLayout>
-      {session ? (
+      {status === 'authenticated' ? (
         <div>
           <p>Signed in as {session?.user?.email}</p>
         </div>
