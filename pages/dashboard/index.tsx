@@ -1,16 +1,18 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import PageLayout from 'layouts/PageLayout';
+import DashboardLayout from 'layouts/dashboard';
 import { signIn, getSession, useSession } from 'next-auth/react';
 
 function DashBoardPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
-  console.log({ session });
   return (
-    <PageLayout>
+    <DashboardLayout>
       {status === 'authenticated' ? (
         <div>
+          <h2 className='text-2xl font-semibold'>
+            welcome {session.user?.name}
+          </h2>
           <p>Signed in as {session?.user?.email}</p>
         </div>
       ) : (
@@ -18,7 +20,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
           <button onClick={() => signIn('google')}>Sign in</button>
         </div>
       )}
-    </PageLayout>
+    </DashboardLayout>
   );
 }
 
