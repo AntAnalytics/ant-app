@@ -26,7 +26,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: 'Settings', href: '/setting' },
-  { name: 'Help', href: '/Help' },
+  { name: 'Help', href: '/help' },
   { name: 'Sign out', href: '/api/auth/signout' },
 ];
 

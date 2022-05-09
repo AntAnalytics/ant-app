@@ -14,7 +14,7 @@ const PageLayout: FunctionComponent<PageLayoutProps> = ({ children }) => {
         <title>Any Analytics</title>
       </Head>
       <MainNavBar />
-      <main>{children}</main>
+      <main className=''>{children}</main>
       <MainFooter />
     </>
   );
