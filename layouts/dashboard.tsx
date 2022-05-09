@@ -25,8 +25,8 @@ const navigation = [
   { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ];
 const userNavigation = [
-  { name: 'Your Profile', href: '/profile' },
   { name: 'Settings', href: '/setting' },
+  { name: 'Help', href: '/Help' },
   { name: 'Sign out', href: '/api/auth/signout' },
 ];
 
