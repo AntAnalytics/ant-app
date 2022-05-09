@@ -16,7 +16,8 @@ import {
   UsersIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 const features = [
   {
     name: 'Unlimited Inboxes',
@@ -441,3 +442,20 @@ export default function HomeV2() {
     </PageLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
