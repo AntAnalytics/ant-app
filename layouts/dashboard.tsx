@@ -15,12 +15,13 @@ import {
 import { SearchIcon } from '@heroicons/react/solid';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
+  // { name: 'Team', href: '#', icon: UsersIcon, current: false },
+  // { name: 'Projects', href: '#', icon: FolderIcon, current: false },
+  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '#', icon: InboxIcon, current: false },
   { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ];
@@ -39,6 +40,7 @@ interface DashboardLayoutProps {}
 const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
   children,
 }) => {
+  const router = useRouter();
   const { data: session, status } = useSession();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -109,7 +111,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                   <div className='flex flex-shrink-0 items-center px-4'>
                     <img
                       className='h-8 w-auto'
-                      src='https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg'
+                      src='/TAA-Logo.png'
                       alt='Workflow'
                     />
                   </div>
@@ -120,7 +122,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            item.href === router.asPath
                               ? 'bg-gray-900 text-white'
                               : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                             'group flex items-center rounded-md px-2 py-2 text-base font-medium'
@@ -154,11 +156,8 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className='flex min-h-0 flex-1 flex-col bg-gray-800'>
             <div className='flex h-16 flex-shrink-0 items-center bg-gray-900 px-4'>
-              <img
-                className='h-8 w-auto'
-                src='https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg'
-                alt='Workflow'
-              />
+              <img className='h-8 w-auto' src='/TAA-Logo.png' alt='Workflow' />
+              <span className='text-white'>The Any Analytics</span>
             </div>
             <div className='flex flex-1 flex-col overflow-y-auto'>
               <nav className='flex-1 space-y-1 px-2 py-4'>
@@ -167,7 +166,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current
+                      item.href === router.asPath
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
