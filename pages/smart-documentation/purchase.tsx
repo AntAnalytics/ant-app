@@ -13,6 +13,7 @@ import { signIn, getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import DashboardBreadcrumbs from 'components/Breadcrumbs/dashboard';
 
 const tabs = [
   {
@@ -125,10 +126,19 @@ function PurchasePage({}: InferGetServerSidePropsType<
 >) {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const pages = [
+    { name: 'Smart Documentation', href: '/smart-documentation' },
+    { name: 'Purchase', href: '/smart-documentation/purchase' },
+  ];
+
   return (
     <DashboardLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
         <div className='pt-10 pb-16'>
+          <div>
+            <DashboardBreadcrumbs pages={pages} />
+          </div>
           <div className='px-4 sm:px-6 md:px-0'>
             <h1 className='text-3xl font-extrabold text-gray-900'>
               Smart Documentation
