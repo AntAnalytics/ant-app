@@ -1,5 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import DashboardLayout from 'layouts/dashboard';
+import DocumentationLayout from 'layouts/documentation';
 
 import {
   AcademicCapIcon,
@@ -139,7 +139,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
   ];
 
   return (
-    <DashboardLayout>
+    <DocumentationLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
         <div className='pt-10 pb-16'>
           <div>
@@ -268,7 +268,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </DocumentationLayout>
   );
 }
 

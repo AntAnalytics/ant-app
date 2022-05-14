@@ -1,5 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import DashboardLayout from 'layouts/dashboard';
+import DocumentationLayout from 'layouts/documentation';
 
 import { signIn, getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -93,7 +93,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
   const { data: session, status } = useSession();
   const router = useRouter();
   return (
-    <DashboardLayout>
+    <DocumentationLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
         <div className='pt-10 pb-16'>
           <div className='px-4 sm:px-6 md:px-0'>
@@ -109,23 +109,31 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
           <div className='px-4 sm:px-6 md:px-0'>
             <div className='py-6'>
               <section className='mt-8'>
-                <div className='flex flex-col gap-4 '>loading ...</div>
+                <div className='flex flex-col gap-4 '></div>
               </section>
             </div>
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </DocumentationLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    redirect: {
-      destination: '/smart-documentation/purchase',
-      permanent: false,
+    props: {
+      // session,
     },
   };
 };
