@@ -21,10 +21,15 @@ export default function DashboardBreadcrumbs({
       >
         <li className='flex'>
           <div className='flex items-center'>
-            <a href='/dashboard' className='text-gray-400 hover:text-gray-500'>
-              <HomeIcon className='h-5 w-5 flex-shrink-0' aria-hidden='true' />
-              <span className='sr-only'>Home</span>
-            </a>
+            <Link href='/dashboard'>
+              <a className='text-gray-400 hover:text-gray-500'>
+                <HomeIcon
+                  className='h-5 w-5 flex-shrink-0'
+                  aria-hidden='true'
+                />
+                <span className='sr-only'>Home</span>
+              </a>
+            </Link>
           </div>
         </li>
         {pages.map((page) => (

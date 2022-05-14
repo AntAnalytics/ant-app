@@ -95,6 +95,8 @@ const tabs = [
 const actions = [
   {
     title: 'Approved supplier',
+    subtitle:
+      ' Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.',
     href: '/approved-supplier',
     icon: BadgeCheckIcon,
     iconForeground: 'text-purple-700',
@@ -102,6 +104,8 @@ const actions = [
   },
   {
     title: 'Supplier specification',
+    subtitle:
+      ' Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.',
     href: '#',
     icon: UsersIcon,
     iconForeground: 'text-sky-700',
@@ -110,6 +114,8 @@ const actions = [
 
   {
     title: 'Vendor audit (format)',
+    subtitle:
+      ' Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.',
     href: '#',
     icon: ReceiptRefundIcon,
     iconForeground: 'text-rose-700',
@@ -238,9 +244,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
                           </Link>
                         </h3>
                         <p className='mt-2 text-sm text-gray-500'>
-                          Doloribus dolores nostrum quia qui natus officia quod
-                          et dolorem. Sit repellendus qui ut at blanditiis et
-                          quo et molestiae.
+                          {action.subtitle}
                         </p>
                       </div>
                       <span
