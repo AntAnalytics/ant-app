@@ -18,7 +18,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
+  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
   // { name: 'Team', href: '#', icon: UsersIcon, current: false },
   // { name: 'Projects', href: '#', icon: FolderIcon, current: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
@@ -26,9 +26,8 @@ const navigation = [
     name: 'Smart Documents',
     href: '/smart-documentation',
     icon: InboxIcon,
-    current: false,
   },
-  { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'Reports', href: '#', icon: ChartBarIcon },
 ];
 const userNavigation = [
   { name: 'Settings', href: '/setting' },
@@ -52,14 +51,6 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -127,7 +118,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.href === router.asPath
+                            router.asPath.includes(item.href)
                               ? 'bg-gray-900 text-white'
                               : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                             'group flex items-center rounded-md px-2 py-2 text-base font-medium'
@@ -135,7 +126,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                         >
                           <item.icon
                             className={classNames(
-                              item.current
+                              router.asPath.includes(item.href)
                                 ? 'text-gray-300'
                                 : 'text-gray-400 group-hover:text-gray-300',
                               'mr-4 h-6 w-6 flex-shrink-0'
@@ -171,7 +162,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.href === router.asPath
+                      router.asPath.includes(item.href)
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
@@ -179,7 +170,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                   >
                     <item.icon
                       className={classNames(
-                        item.current
+                        router.asPath.includes(item.href)
                           ? 'text-gray-300'
                           : 'text-gray-400 group-hover:text-gray-300',
                         'mr-3 h-6 w-6 flex-shrink-0'

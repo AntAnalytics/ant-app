@@ -1,53 +1,84 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DashboardLayout from 'layouts/dashboard';
+
 import { signIn, getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const tabs = [
-  { name: 'Purchase', href: '/smart-documentation/purchase', current: true },
-  { name: 'Receiving', href: '/smart-documentation/receiving', current: false },
-  { name: 'Stores', href: '/smart-documentation/stores', current: false },
+  {
+    name: 'Purchase',
+    href: '/smart-documentation/purchase',
+    count: 3,
+    current: true,
+  },
+  {
+    name: 'Receiving',
+    href: '/smart-documentation/receiving',
+    count: 3,
+    current: false,
+  },
+  {
+    name: 'Stores',
+    href: '/smart-documentation/stores',
+    count: 2,
+    current: false,
+  },
   {
     name: 'Pre Production',
     href: '/smart-documentation/pre-production',
+    count: 4,
     current: false,
   },
   {
     name: 'Production',
     href: '/smart-documentation/production',
+    count: 4,
+
     current: false,
   },
-  { name: 'Service', href: '/smart-documentation/service', current: false },
+  {
+    name: 'Service',
+    href: '/smart-documentation/service',
+    count: 2,
+    current: false,
+  },
   {
     name: 'Transportation',
     href: '/smart-documentation/transportation',
+    count: 1,
     current: false,
   },
   {
     name: 'Personal Hygiene',
     href: '/smart-documentation/personal-hygiene',
+    count: 1,
     current: false,
   },
   {
     name: 'Quality assusrance',
     href: '/smart-documentation/quality-assusrance',
+    count: 4,
     current: false,
   },
   {
     name: 'Regulatory',
+
     href: '/smart-documentation/regulatory',
+    count: 5,
     current: false,
   },
   {
     name: 'Support services',
     href: '/smart-documentation/support-services',
+    count: 6,
     current: false,
   },
   {
     name: 'Pest control Management',
     href: '/smart-documentation/pest-control-management',
+    count: 5,
     current: false,
   },
 ];
@@ -77,208 +108,8 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
           </div>
           <div className='px-4 sm:px-6 md:px-0'>
             <div className='py-6'>
-              {/* Tabs */}
-              <div className='lg:hidden'>
-                <label htmlFor='selected-tab' className='sr-only'>
-                  Select a tab
-                </label>
-                <select
-                  id='selected-tab'
-                  name='selected-tab'
-                  className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm'
-                  defaultValue={tabs.find((tab) => tab.current)?.name}
-                  onChange={(e) =>
-                    router.push(
-                      tabs.find((tab) => tab.name === e.target.value)?.href!
-                    )
-                  }
-                >
-                  {tabs.map((tab) => (
-                    <option key={tab.name}>{tab.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className='hidden lg:block lg:overflow-y-auto'>
-                <div className='border-b border-gray-200'>
-                  <nav className='-mb-px flex space-x-8'>
-                    {tabs.map((tab) => (
-                      <Link key={tab.name} href={tab.href}>
-                        <a
-                          className={classNames(
-                            tab.current
-                              ? 'border-purple-500 text-purple-600'
-                              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                            'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
-                          )}
-                        >
-                          {tab.name} &rarr;
-                        </a>
-                      </Link>
-                    ))}
-                  </nav>
-                </div>
-              </div>
-
-              <section>
-                {/* Description list with inline editing */}
-                <div className='mt-10 divide-y divide-gray-200'>
-                  <div className='space-y-1'>
-                    <h3 className='text-lg font-medium leading-6 text-gray-900'>
-                      Profile
-                    </h3>
-                    <p className='max-w-2xl text-sm text-gray-500'>
-                      This information will be displayed publicly so be careful
-                      what you share.
-                    </p>
-                  </div>
-                  <div className='mt-6'>
-                    <dl className='divide-y divide-gray-200'>
-                      <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Name
-                        </dt>
-                        <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                          <span className='flex-grow'>
-                            {session?.user?.name}
-                          </span>
-                          <span className='ml-4 flex-shrink-0'>
-                            {/* <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button> */}
-                          </span>
-                        </dd>
-                      </div>
-                      <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Photo
-                        </dt>
-                        <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                          <span className='flex-grow'>
-                            <Image
-                              className='h-8 w-8 rounded-full'
-                              src={session?.user?.image || '/'}
-                              alt=''
-                              height={32}
-                              width={32}
-                            />
-                          </span>
-                          <span className='ml-4 flex flex-shrink-0 items-start space-x-4'>
-                            {/* <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button>
-                          <span className='text-gray-300' aria-hidden='true'>
-                            |
-                          </span>
-                          <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Remove
-                          </button> */}
-                          </span>
-                        </dd>
-                      </div>
-                      <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Email
-                        </dt>
-                        <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                          <span className='flex-grow'>
-                            {session?.user?.email}
-                          </span>
-                          <span className='ml-4 flex-shrink-0'>
-                            {/* <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button> */}
-                          </span>
-                        </dd>
-                      </div>
-                      {/* <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 sm:py-5'>
-                      <dt className='text-sm font-medium text-gray-500'>
-                        Job title
-                      </dt>
-                      <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                        <span className='flex-grow'>
-                          Human Resources Manager
-                        </span>
-                        <span className='ml-4 flex-shrink-0'>
-                          <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button>
-                        </span>
-                      </dd>
-                    </div> */}
-                    </dl>
-                  </div>
-                </div>
-
-                <div className='mt-10 divide-y divide-gray-200'>
-                  <div className='space-y-1'>
-                    <h3 className='text-lg font-medium leading-6 text-gray-900'>
-                      Account
-                    </h3>
-                    <p className='max-w-2xl text-sm text-gray-500'>
-                      Manage how information is displayed on your account.
-                    </p>
-                  </div>
-                  <div className='mt-6'>
-                    <dl className='divide-y divide-gray-200'>
-                      <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Language
-                        </dt>
-                        <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                          <span className='flex-grow'>English</span>
-                          <span className='ml-4 flex-shrink-0'>
-                            {/* <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button> */}
-                          </span>
-                        </dd>
-                      </div>
-                      <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Date format
-                        </dt>
-                        <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                          <span className='flex-grow'>DD-MM-YYYY</span>
-                          <span className='ml-4 flex flex-shrink-0 items-start space-x-4'>
-                            {/* <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Update
-                          </button>
-                          <span className='text-gray-300' aria-hidden='true'>
-                            |
-                          </span>
-                          <button
-                            type='button'
-                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                          >
-                            Remove
-                          </button> */}
-                          </span>
-                        </dd>
-                      </div>
-                    </dl>
-                  </div>
-                </div>
+              <section className='mt-8'>
+                <div className='flex flex-col gap-4 '>loading ...</div>
               </section>
             </div>
           </div>
@@ -291,18 +122,10 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    };
-  }
-
   return {
-    props: {
-      // session,
+    redirect: {
+      destination: '/smart-documentation/purchase',
+      permanent: false,
     },
   };
 };
