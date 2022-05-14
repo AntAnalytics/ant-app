@@ -1,6 +1,12 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DocumentationLayout from 'layouts/documentation';
+import test from 'src/checklists/test';
 
+const answerOptions = [
+  { id: 'yes', title: 'Yes', score: 1 },
+  { id: 'no', title: 'No', score: 0 },
+  { id: 'na', title: 'N/A', score: 1 },
+];
 import {
   AcademicCapIcon,
   BadgeCheckIcon,
@@ -14,6 +20,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DashboardBreadcrumbs from 'components/Breadcrumbs/dashboard';
+import { useForm } from 'react-hook-form';
 
 const tabs = [
   {
@@ -130,6 +137,20 @@ function classNames(...classes: string[]) {
 function PurchasePage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    let score = 0;
+    Object.values(data).forEach((answer) => {
+      if (answer !== 'No') score++;
+    });
+    console.log({ score });
+  };
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -141,130 +162,60 @@ function PurchasePage({}: InferGetServerSidePropsType<
   return (
     <DocumentationLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
-        <div className='pt-10 pb-16'>
-          <div>
-            <DashboardBreadcrumbs pages={pages} />
-          </div>
-          <div className='px-4 sm:px-6 md:px-0'>
-            <h1 className='text-3xl font-extrabold text-gray-900'>
-              Smart Documentation
-            </h1>
-            <p>
-              SMART documentation is fully complied with local, national and
-              international regulations as well as applicable Global Food safety
-              standards – ISO 22000, BRCGS, IFS, SQF, FSSC, HACCP.
-            </p>
-          </div>
-          <div className='px-4 sm:px-6 md:px-0'>
-            <div className='py-6'>
-              {/* Tabs */}
-              <div className='lg:hidden'>
-                <label htmlFor='selected-tab' className='sr-only'>
-                  Select a tab
-                </label>
-                <select
-                  id='selected-tab'
-                  name='selected-tab'
-                  className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm'
-                  defaultValue={tabs.find((tab) => tab.current)?.name}
-                  onChange={(e) =>
-                    router.push(
-                      tabs.find((tab) => tab.name === e.target.value)?.href!
-                    )
-                  }
-                >
-                  {tabs.map((tab) => (
-                    <option key={tab.name}>{tab.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className='hidden lg:block lg:overflow-y-auto'>
-                <div className='border-b border-gray-200'>
-                  <nav className='-mb-px flex space-x-8'>
-                    {tabs.map((tab) => (
-                      <Link key={tab.name} href={tab.href}>
-                        <a
-                          className={classNames(
-                            tab.current
-                              ? 'border-purple-500 text-purple-600'
-                              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                            'whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'
-                          )}
-                        >
-                          {tab.name}{' '}
-                          {tab.count ? (
-                            <span
-                              className={classNames(
-                                tab.current
-                                  ? 'bg-indigo-100 text-indigo-600'
-                                  : 'bg-gray-100 text-gray-900',
-                                'ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'
-                              )}
-                            >
-                              {tab.count}
-                            </span>
-                          ) : null}{' '}
-                          &rarr;
-                        </a>
-                      </Link>
-                    ))}
-                  </nav>
-                </div>
-              </div>
-
-              <section className='mt-8'>
-                <div className='flex flex-col gap-4 '>
-                  {actions.map((action) => (
-                    <div
-                      key={action.title}
-                      className=' group relative rounded-lg bg-white p-6 shadow-sm focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500'
-                    >
-                      <div>
-                        <span
-                          className={classNames(
-                            action.iconBackground,
-                            action.iconForeground,
-                            'inline-flex rounded-lg p-3 ring-4 ring-white'
-                          )}
-                        >
-                          <action.icon className='h-6 w-6' aria-hidden='true' />
-                        </span>
-                      </div>
-                      <div className='mt-8'>
-                        <h3 className='text-lg font-medium'>
-                          <Link href={router.asPath + action.href}>
-                            <a className='focus:outline-none'>
-                              {/* Extend touch target to entire panel */}
-                              <span
-                                className='absolute inset-0'
-                                aria-hidden='true'
-                              />
-                              {action.title}
-                            </a>
-                          </Link>
-                        </h3>
-                        <p className='mt-2 text-sm text-gray-500'>
-                          {action.subtitle}
-                        </p>
-                      </div>
-                      <span
-                        className='pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400'
-                        aria-hidden='true'
+        <div className='px-4 sm:px-6 md:px-0'>
+          <div className='py-6'>
+            <section className='container mx-auto py-10'>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {test.map((section, sIndex) => (
+                  <div key={section.id} className='my-8 p-4'>
+                    <h2 className='text-xl font-bold text-indigo-600'>
+                      {section.title}
+                    </h2>
+                    {section.questions.map((q, qIndex) => (
+                      <div
+                        key={q.id}
+                        className='my-1 flex flex-col justify-between border-t-2 md:flex-row'
                       >
-                        <svg
-                          className='h-6 w-6'
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='currentColor'
-                          viewBox='0 0 24 24'
-                        >
-                          <path d='M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z' />
-                        </svg>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
+                        <h3 className='col-span-2 text-base'>
+                          <span className='mr-4'>{qIndex + 1})</span>
+                          {q.question}
+                        </h3>
+                        <div className='flex space-x-8'>
+                          {answerOptions.map((answerOption) => (
+                            <div
+                              key={answerOption.id}
+                              className='flex items-center '
+                            >
+                              <input
+                                id={q.id + '/' + answerOption.id}
+                                type='radio'
+                                value={answerOption.title}
+                                className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                {...register(q.id.toString(), {
+                                  required: true,
+                                })}
+                              />
+                              <label
+                                htmlFor={q.id + '/' + answerOption.id}
+                                className='ml-3 block select-none text-sm font-medium text-gray-700'
+                              >
+                                {answerOption.title}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+                <button
+                  type='submit'
+                  className='ml-auto flex rounded bg-indigo-600 px-4 py-2 text-white'
+                >
+                  Submit
+                </button>
+              </form>
+            </section>
           </div>
         </div>
       </div>

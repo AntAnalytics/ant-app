@@ -28,7 +28,7 @@ const navigation = [
     href: '/smart-documentation',
     icon: InboxIcon,
   },
-  { name: 'Reports', href: '#', icon: ChartBarIcon },
+  // { name: 'Reports', href: '#', icon: ChartBarIcon },
 ];
 const userNavigation = [
   { name: 'Settings', href: '/setting' },
