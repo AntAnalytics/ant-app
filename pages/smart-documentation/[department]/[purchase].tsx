@@ -2,11 +2,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DocumentationLayout from 'layouts/documentation';
 import test from 'src/checklists/test';
 
-const answerOptions = [
-  { id: 'yes', title: 'Yes', score: 1 },
-  { id: 'no', title: 'No', score: 0 },
-  { id: 'na', title: 'N/A', score: 1 },
-];
 import {
   AcademicCapIcon,
   BadgeCheckIcon,
@@ -99,6 +94,21 @@ const tabs = [
   },
 ];
 
+const Record = [
+  {
+    SupplierName: 'Lindsay Walton',
+    Category: 'food',
+    ProductName: 'Product',
+    GST: 'xx xx xxxx xxx',
+    FSSAILicenseNo: 'xx xxxxx xxx',
+    Location: 'delhi',
+    Address: 'south delhi',
+    SupplyingLocation: 'west delhi',
+    SKU: 'sku',
+  },
+  // More Record...
+];
+
 const actions = [
   {
     title: 'Approved supplier',
@@ -154,71 +164,256 @@ function PurchasePage({}: InferGetServerSidePropsType<
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const pages = [
-    { name: 'Smart Documentation', href: '/smart-documentation' },
-    { name: 'Purchase', href: '/smart-documentation/purchase' },
-  ];
-
   return (
     <DocumentationLayout>
-      <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
-        <div className='px-4 sm:px-6 md:px-0'>
-          <div className='py-6'>
-            <section className='container mx-auto py-10'>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {test.map((section, sIndex) => (
-                  <div key={section.id} className='my-8 p-4'>
-                    <h2 className='text-xl font-bold text-indigo-600'>
-                      {section.title}
-                    </h2>
-                    {section.questions.map((q, qIndex) => (
-                      <div
-                        key={q.id}
-                        className='my-1 flex flex-col justify-between border-t-2 md:flex-row'
-                      >
-                        <h3 className='col-span-2 text-base'>
-                          <span className='mr-4'>{qIndex + 1})</span>
-                          {q.question}
-                        </h3>
-                        <div className='flex space-x-8'>
-                          {answerOptions.map((answerOption) => (
-                            <div
-                              key={answerOption.id}
-                              className='flex items-center '
-                            >
-                              <input
-                                id={q.id + '/' + answerOption.id}
-                                type='radio'
-                                value={answerOption.title}
-                                className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                                {...register(q.id.toString(), {
-                                  required: true,
-                                })}
-                              />
-                              <label
-                                htmlFor={q.id + '/' + answerOption.id}
-                                className='ml-3 block select-none text-sm font-medium text-gray-700'
-                              >
-                                {answerOption.title}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-                <button
-                  type='submit'
-                  className='ml-auto flex rounded bg-indigo-600 px-4 py-2 text-white'
+      <section className='w-full '>
+        <form>
+          <table className='min-w-full divide-y divide-gray-300'>
+            <thead className='bg-gray-50'>
+              <tr>
+                <th
+                  scope='col'
+                  className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6'
                 >
-                  Submit
-                </button>
-              </form>
-            </section>
-          </div>
-        </div>
-      </div>
+                  Sr No
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Supplier name
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Category
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Products name
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  GST NO
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  FSSAI License no
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Location
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Address
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  Supplying location
+                </th>
+                <th
+                  scope='col'
+                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                >
+                  SKU
+                </th>
+                <th scope='col' className='relative py-3.5 pl-3 pr-4 sm:pr-6'>
+                  <span className='sr-only'>Edit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className='divide-y divide-gray-200 bg-white'>
+              {Record.map((person, index) => (
+                <tr key={person.GST + person.Address + person.Location}>
+                  <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
+                    {index + 1}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.SupplierName}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.Category}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.ProductName}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.GST}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.FSSAILicenseNo}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.Location}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.Address}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.SupplyingLocation}
+                  </td>
+                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                    {person.SKU}
+                  </td>
+                  <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                    <a
+                      href='#'
+                      className='text-indigo-600 hover:text-indigo-900'
+                    >
+                      Edit
+                      <span className='sr-only'>, {person.SupplierName}</span>
+                    </a>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'></td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Supplier name
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='email' className='sr-only'>
+                      Email
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                  </div>
+                </td>
+                <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                  <a href='#' className='text-indigo-600 hover:text-indigo-900'>
+                    Submit
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </section>
+      <style jsx>{`
+        td {
+          min-width: 200px;
+        }
+      `}</style>
     </DocumentationLayout>
   );
 }
