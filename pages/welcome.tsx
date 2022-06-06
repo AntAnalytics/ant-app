@@ -1,15 +1,161 @@
 import DashboardLayout from 'layouts/dashboard';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const category = [
-  { id: 1, name: 'Retail' },
-  { id: 2, name: 'Catering and Hospitality' },
-  { id: 3, name: 'Dairy Industry' },
-  { id: 4, name: 'Food Manufacturing' },
-  { id: 5, name: 'Warehouse' },
+type Category = {
+  id: number;
+  name: string;
+  checkLists: {
+    id: number;
+    name: string;
+    link?: string;
+  }[];
+};
+
+const categoryList: Category[] = [
+  {
+    id: 1,
+    name: 'Retail',
+    checkLists: [
+      {
+        id: 1,
+        name: 'ISO 22000',
+        link: '',
+      },
+      {
+        id: 2,
+        name: 'Hygiene rating',
+        link: '',
+      },
+      {
+        id: 3,
+        name: 'Covid-19',
+      },
+      {
+        id: 4,
+        name: 'GMP',
+      },
+      {
+        id: 5,
+        name: 'General cleaning checklist',
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Catering and Hospitality',
+    checkLists: [
+      {
+        id: 1,
+        name: 'ISO 22000',
+        link: '',
+      },
+      {
+        id: 2,
+        name: 'Hygiene rating',
+        link: '',
+      },
+      {
+        id: 3,
+        name: 'Covid-19',
+      },
+      {
+        id: 4,
+        name: 'Walk through audit',
+      },
+      {
+        id: 5,
+        name: 'General cleaning checklist',
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Dairy Industry',
+    checkLists: [
+      {
+        id: 1,
+        name: 'ISO 22000',
+        link: '',
+      },
+      {
+        id: 2,
+        name: 'Hygiene rating',
+        link: '',
+      },
+      {
+        id: 3,
+        name: 'Covid-19',
+      },
+      {
+        id: 4,
+        name: 'Walk through audit',
+      },
+      {
+        id: 5,
+        name: 'General cleaning checklist',
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Food Manufacturing',
+    checkLists: [
+      {
+        id: 1,
+        name: 'ISO 22000',
+        link: '',
+      },
+      {
+        id: 2,
+        name: 'Hygiene rating',
+        link: '',
+      },
+      {
+        id: 3,
+        name: 'Covid-19',
+      },
+      {
+        id: 4,
+        name: 'GMP',
+      },
+      {
+        id: 5,
+        name: 'General cleaning checklist',
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Warehouse',
+    checkLists: [
+      {
+        id: 1,
+        name: 'ISO 22000',
+        link: '',
+      },
+      {
+        id: 2,
+        name: 'Hygiene rating',
+        link: '',
+      },
+      {
+        id: 3,
+        name: 'Covid-19',
+      },
+      {
+        id: 4,
+        name: 'GDP Audit',
+      },
+      {
+        id: 5,
+        name: 'Daily inspection checklist',
+      },
+    ],
+  },
 ];
 
 enum STEP {
@@ -27,19 +173,17 @@ const WelcomePage: NextPage = () => {
   } = useForm();
 
   const [step, setStep] = useState(STEP.CATEGORY);
-  const [LSCat, setLSCat] = useState();
+  const [LSCat, setLSCat] = useState<Category[]>([]);
 
   const onSubmitCat = (data: any) => {
     localStorage.setItem('category', JSON.stringify(data));
-    setLSCat(data);
+    const cat = categoryList.filter((category) => data[category.name]);
+    setLSCat(cat);
     setStep(STEP.LIST);
   };
   const onSubmitList = (data: any) => {
     console.log({ data });
   };
-
-  console.log(LSCat);
-  if (LSCat) console.log(Object.keys(LSCat).filter((k) => LSCat[k]));
 
   return (
     <DashboardLayout>
@@ -51,7 +195,7 @@ const WelcomePage: NextPage = () => {
               Choose Category
             </legend>
             <div className='mt-4 divide-y divide-gray-200 border-t border-b border-gray-200'>
-              {category.map((cat, catIdx) => (
+              {categoryList.map((cat, catIdx) => (
                 <div key={catIdx} className='relative flex items-start py-4'>
                   <div className='min-w-0 flex-1 text-sm'>
                     <label
@@ -83,14 +227,20 @@ const WelcomePage: NextPage = () => {
       )}
       {step === STEP.LIST && (
         <form onSubmit={handleSubmit(onSubmitList)}>
-          {LSCat &&
-            Object.keys(LSCat)
-              .filter((k) => LSCat[k])
-              .map((cat) => (
-                <>
-                  <h2 key={cat}>{cat}</h2>
-                </>
-              ))}
+          {LSCat?.map((cat) => (
+            <div key={cat.id} className='my-8 ml-4'>
+              <ul className='list-disc'>
+                <span className='text-xl font-bold'>{cat.name}</span>
+                {cat.checkLists.map((list) => (
+                  <li className='list-item' key={list.id}>
+                    <Link href={list.link || ''}>
+                      <a>{list.name}</a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </form>
       )}
     </DashboardLayout>
