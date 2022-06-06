@@ -28,6 +28,11 @@ const CheckListPage: NextPage = () => {
     <PageLayout>
       <section className='container mx-auto py-10'>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className=''>
+            <p>Date : {new Date().toDateString()}</p>
+            <label htmlFor='name'>Name: </label>
+            <input type='text' />
+          </div>
           {test.map((section, sIndex) => (
             <div key={section.id} className='my-8 p-4'>
               <h2 className='text-xl font-bold text-indigo-600'>
