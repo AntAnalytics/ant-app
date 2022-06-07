@@ -227,14 +227,14 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
                 {/* Profile dropdown */}
                 <Menu as='div' className='relative ml-3'>
                   <div>
-                    <Menu.Button className='flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
+                    <Menu.Button className='flex max-w-xs items-center rounded-full bg-white text-sm ring-2 ring-black focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
                       <span className='sr-only'>Open user menu</span>
                       <Image
-                        className='h-8 w-8 rounded-full'
+                        className='h-8 w-8 rounded-full '
                         src={session?.user?.image || '/'}
                         height={32}
                         width={32}
-                        alt=''
+                        alt='profile image'
                       />
                     </Menu.Button>
                   </div>
