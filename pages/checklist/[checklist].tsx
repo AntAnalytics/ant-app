@@ -30,8 +30,56 @@ const CheckListPage: NextPage = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=''>
             <p>Date : {new Date().toDateString()}</p>
-            <label htmlFor='name'>Name: </label>
-            <input type='text' />
+            <table>
+              <tr>
+                <td>
+                  <label htmlFor='name'>Name: </label>
+                </td>
+                <td>
+                  <input type='text' required />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor='companyName'>Company Name: </label>
+                </td>
+                <td>
+                  <input type='text' required />
+                </td>
+              </tr>
+            </table>
+            <tr>
+              <td>
+                <label htmlFor='licenseNo'>FSSAI license No: </label>
+              </td>
+              <td>
+                <input type='text' required />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor='person'>Contact person: </label>
+              </td>
+              <td>
+                <input type='text' required />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor='auditor'>Name of Auditor: </label>
+              </td>
+              <td>
+                <input type='text' required />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor='address'> Address: </label>
+              </td>
+              <td>
+                <input type='text' required />
+              </td>
+            </tr>
           </div>
           {test.map((section, sIndex) => (
             <div key={section.id} className='my-8 p-4'>
