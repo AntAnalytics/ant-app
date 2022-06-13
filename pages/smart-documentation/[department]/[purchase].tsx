@@ -15,7 +15,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import DashboardBreadcrumbs from 'components/Breadcrumbs/dashboard';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const tabs = [
   {
@@ -154,7 +156,14 @@ function PurchasePage({}: InferGetServerSidePropsType<
     formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+  const [records, setRecords] = useState([]);
+
   const onSubmit = (data: any) => {
+    const pur = window.localStorage.getItem(`/${router.asPath}`);
+    window.localStorage.setItem(`/${router.asPath}`, JSON.stringify(data));
+
+    console.log({ data, pur });
     let score = 0;
     Object.values(data).forEach((answer) => {
       if (answer !== 'No') score++;
@@ -162,12 +171,20 @@ function PurchasePage({}: InferGetServerSidePropsType<
     console.log({ score });
   };
   const { data: session, status } = useSession();
-  const router = useRouter();
+
+  useEffect(() => {
+    const locdata = window.localStorage.getItem(`/${router.asPath}`)!;
+    if (locdata) {
+      const parseLocData = JSON.parse(locdata);
+      setRecords(parseLocData);
+    }
+  }, []);
+  console.log({ records });
 
   return (
     <DocumentationLayout>
       <section className='w-full '>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <table className='min-w-full divide-y divide-gray-300'>
             <thead className='bg-gray-50'>
               <tr>
@@ -270,13 +287,10 @@ function PurchasePage({}: InferGetServerSidePropsType<
                     {person.SKU}
                   </td>
                   <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                    <a
-                      href='#'
-                      className='text-indigo-600 hover:text-indigo-900'
-                    >
+                    <button className='text-indigo-600 hover:text-indigo-900'>
                       Edit
                       <span className='sr-only'>, {person.SupplierName}</span>
-                    </a>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -284,125 +298,128 @@ function PurchasePage({}: InferGetServerSidePropsType<
                 <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'></td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
+                    <label htmlFor='sName' className='sr-only'>
                       Supplier name
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='sName'
+                      id='sName'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                      {...register('sName')}
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='category' className='sr-only'>
+                      category
+                    </label>
+                    <input
+                      type='category'
+                      id='category'
+                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                      {...register('category')}
+                    />
+                  </div>
+                </td>
+                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                  <div>
+                    <label htmlFor='Pname' className='sr-only'>
+                      Pname
+                    </label>
+                    <input
+                      type='Pname'
+                      {...register('Pname')}
+                      id='Pname'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='gstNo' className='sr-only'>
+                      gstNo
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='gstNo'
+                      {...register('gstNo')}
+                      id='gstNo'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='Lno' className='sr-only'>
+                      Lno
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='Lno'
+                      {...register('Lno')}
+                      id='Lno'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='Location' className='sr-only'>
+                      Location
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='Location'
+                      {...register('Location')}
+                      id='Location'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='address' className='sr-only'>
+                      address
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='address'
+                      {...register('address')}
+                      id='address'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='sLoc' className='sr-only'>
+                      sLoc
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='sLoc'
+                      {...register('sLoc')}
+                      id='sLoc'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                   <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
+                    <label htmlFor='sku' className='sr-only'>
+                      sku
                     </label>
                     <input
-                      type='email'
-                      name='email'
-                      id='email'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
-                    </label>
-                    <input
-                      type='email'
-                      name='email'
-                      id='email'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='email' className='sr-only'>
-                      Email
-                    </label>
-                    <input
-                      type='email'
-                      name='email'
-                      id='email'
+                      type='sku'
+                      {...register('sku')}
+                      id='sku'
                       className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
                   </div>
                 </td>
                 <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                  <a href='#' className='text-indigo-600 hover:text-indigo-900'>
+                  <button
+                    type='submit'
+                    className='text-indigo-600 hover:text-indigo-900'
+                  >
                     Submit
-                  </a>
+                  </button>
                 </td>
               </tr>
             </tbody>
