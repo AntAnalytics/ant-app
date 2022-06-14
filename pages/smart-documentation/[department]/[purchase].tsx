@@ -160,8 +160,8 @@ function PurchasePage({}: InferGetServerSidePropsType<
   const [records, setRecords] = useState([]);
 
   const onSubmit = (data: any) => {
-    const pur = window.localStorage.getItem(`/${router.asPath}`);
-    window.localStorage.setItem(`/${router.asPath}`, JSON.stringify(data));
+    const pur = window.localStorage.getItem(router.asPath);
+    window.localStorage.setItem(router.asPath, JSON.stringify(data));
 
     console.log({ data, pur });
     let score = 0;
@@ -173,7 +173,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    const locdata = window.localStorage.getItem(`/${router.asPath}`)!;
+    const locdata = window.localStorage.getItem(router.asPath)!;
     if (locdata) {
       const parseLocData = JSON.parse(locdata);
       setRecords(parseLocData);
@@ -183,7 +183,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
 
   return (
     <DocumentationLayout>
-      <section className='w-full '>
+      <section className=''>
         <form onSubmit={handleSubmit(onSubmit)}>
           <table className='min-w-full divide-y divide-gray-300'>
             <thead className='bg-gray-50'>

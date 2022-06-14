@@ -20,7 +20,7 @@ const solutions = [
   {
     name: 'Digital Auditing System    ',
     description: "Your customers' data will be safe and secure.",
-    href: '/digital-auditing-system',
+    href: '/tools/digital-auditing-system',
     icon: ShieldCheckIcon,
   },
 
@@ -28,7 +28,7 @@ const solutions = [
     name: 'Smart Documentation    ',
     description:
       'Get detailed reports that will help you make more informed decisions ',
-    href: '/smart-documentation',
+    href: '/tools/smart-documentation',
     icon: DocumentReportIcon,
   },
 ];
@@ -37,7 +37,7 @@ const resources = [
     name: 'Help Center',
     description:
       'Get all of your questions answered in our forums or contact support.',
-    href: '#',
+    href: '/help',
   },
   {
     name: 'Guides',
@@ -45,17 +45,17 @@ const resources = [
       'Learn how to maximize our platform to get the most out of it.',
     href: '#',
   },
-  {
-    name: 'Events',
-    description:
-      'See what meet-ups and other events we might be planning near you.',
-    href: '#',
-  },
-  {
-    name: 'Security',
-    description: 'Understand how we take your privacy seriously.',
-    href: '#',
-  },
+  // {
+  //   name: 'Events',
+  //   description:
+  //     'See what meet-ups and other events we might be planning near you.',
+  //   href: '#',
+  // },
+  // {
+  //   name: 'Security',
+  //   description: 'Understand how we take your privacy seriously.',
+  //   href: '#',
+  // },
 ];
 
 function classNames(...classes: string[]) {
@@ -118,36 +118,36 @@ export default function MainNavBar() {
                     <div className='overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5'>
                       <div className='relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2'>
                         {solutions.map((solution) => (
-                          <a
-                            key={solution.name}
-                            href={solution.href}
-                            className='-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50'
-                          >
-                            <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-indigo-500 text-white sm:h-12 sm:w-12'>
-                              <solution.icon
-                                className='h-6 w-6'
-                                aria-hidden='true'
-                              />
-                            </div>
-                            <div className='ml-4'>
-                              <p className='text-base font-medium text-gray-900'>
-                                {solution.name}
-                              </p>
-                              <p className='mt-1 text-sm text-gray-500'>
-                                {solution.description}
-                              </p>
-                            </div>
-                          </a>
+                          <Link key={solution.name} href={solution.href}>
+                            <a className='-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50'>
+                              <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-indigo-500 text-white sm:h-12 sm:w-12'>
+                                <solution.icon
+                                  className='h-6 w-6'
+                                  aria-hidden='true'
+                                />
+                              </div>
+                              <div className='ml-4'>
+                                <p className='text-base font-medium text-gray-900'>
+                                  {solution.name}
+                                </p>
+                                <p className='mt-1 text-sm text-gray-500'>
+                                  {solution.description}
+                                </p>
+                              </div>
+                            </a>
+                          </Link>
                         ))}
                       </div>
                       <div className='bg-gray-50 p-5 sm:p-8'>
                         <a
-                          href='#'
+                          href='https://theantanalytics.com/#products'
+                          target='_blank'
                           className='-m-3 flow-root rounded-md p-3 hover:bg-gray-100'
+                          rel='noreferrer'
                         >
                           <div className='flex items-center'>
                             <div className='text-base font-medium text-gray-900'>
-                              Enterprise
+                              Many More
                             </div>
                             <span className='ml-3 inline-flex items-center rounded-full bg-indigo-100 px-3 py-0.5 text-xs font-medium leading-5 text-indigo-800'>
                               New
@@ -290,7 +290,7 @@ export default function MainNavBar() {
             </div>
             <div className='py-6 px-5'>
               <div className='grid grid-cols-2 gap-4'>
-                <a
+                {/* <a
                   href='#'
                   className='text-base font-medium text-gray-900 hover:text-gray-700'
                 >
@@ -302,13 +302,15 @@ export default function MainNavBar() {
                   className='text-base font-medium text-gray-900 hover:text-gray-700'
                 >
                   Docs
-                </a>
+                </a> */}
 
                 <a
-                  href='#'
+                  href='https://theantanalytics.com/#products'
+                  target='_blank'
                   className='text-base font-medium text-gray-900 hover:text-gray-700'
+                  rel='noreferrer'
                 >
-                  Enterprise
+                  Many More
                 </a>
                 {resources.map((resource) => (
                   <a

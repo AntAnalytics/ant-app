@@ -193,7 +193,7 @@ const DocumentationLayout: FunctionComponent<DocumentationLayoutProps> = ({
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as='div'
-            className='relative z-40 md:hidden'
+            className='relative z-40 md:hidden '
             onClose={setSidebarOpen}
           >
             <Transition.Child
@@ -504,7 +504,7 @@ const DocumentationLayout: FunctionComponent<DocumentationLayoutProps> = ({
             <div className='py-6'>
               <div className='mx-auto max-w-7xl px-4 sm:px-6 md:px-8'>
                 {/* Replace with your content */}
-                <div className='py-4'>{children}</div>
+                <div className=' py-4'>{children}</div>
                 {/* /End replace */}
               </div>
             </div>

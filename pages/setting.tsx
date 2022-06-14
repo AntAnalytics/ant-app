@@ -3,6 +3,7 @@ import DashboardLayout from 'layouts/dashboard';
 import { getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const tabs = [
   { name: 'General', href: '#', current: true },
@@ -291,6 +292,13 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                           </button> */}
                         </span>
                       </dd>
+                    </div>
+                    <div className='mt-10 flex justify-end'>
+                      <Link href='/onboarding'>
+                        <a className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'>
+                          Update
+                        </a>
+                      </Link>
                     </div>
                   </dl>
                 </div>

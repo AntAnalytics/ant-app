@@ -2,13 +2,23 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DashboardLayout from 'layouts/dashboard';
 import { getSession, useSession } from 'next-auth/react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
+
+type CompanyDetails = {
+  companyName: string;
+  gst: string;
+  country: string;
+  streetAddress: string;
+  city: string;
+  region: string;
+  postalCode: string;
+};
 
 function DashBoardPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -23,6 +33,15 @@ function DashBoardPage({}: InferGetServerSidePropsType<
   } = useForm();
 
   const router = useRouter();
+
+  const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(
+    null
+  );
+
+  useEffect(() => {
+    const data = window.localStorage.getItem('companyDetails');
+    if (data) setCompanyDetails(JSON.parse(data));
+  }, []);
 
   const onSubmit = (data: any) => {
     window.localStorage.setItem('companyDetails', JSON.stringify(data));
@@ -56,6 +75,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('companyName', { required: true })}
                     id='companyName'
                     autoComplete='given-name'
+                    defaultValue={companyDetails?.companyName}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
@@ -95,6 +115,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('streetAddress', { required: true })}
                     id='streetAddress'
                     autoComplete='streetAddress'
+                    defaultValue={companyDetails?.streetAddress}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
@@ -113,6 +134,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('city', { required: true })}
                     id='city'
                     autoComplete='address-level2'
+                    defaultValue={companyDetails?.city}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
@@ -131,6 +153,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('region', { required: true })}
                     id='region'
                     autoComplete='address-level1'
+                    defaultValue={companyDetails?.region}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
@@ -149,6 +172,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('postalCode', { required: true })}
                     id='postalCode'
                     autoComplete='postalCode'
+                    defaultValue={companyDetails?.postalCode}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
@@ -166,6 +190,7 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                     {...register('gst', { required: true })}
                     id='gst'
                     autoComplete='gst'
+                    defaultValue={companyDetails?.gst}
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
