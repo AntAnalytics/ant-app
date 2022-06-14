@@ -20,51 +20,43 @@ import { getSession, signIn } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 const features = [
   {
-    name: 'Unlimited Inboxes',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Tech Based Regulatory Compliance',
+    description: 'Global food regulations at your palm.',
     icon: InboxIcon,
   },
   {
-    name: 'Manage Team Members',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart Food Safety Management System',
+    description: 'Make your HACCP plan Smarter.',
     icon: UsersIcon,
   },
   {
-    name: 'Spam Report',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'VR Based Training System',
+    description: 'Effective training in a smart way.',
     icon: TrashIcon,
   },
   {
-    name: 'Compose in Markdown',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart Supplier Management System',
+    description: 'Supplier risk management through data analytics.',
     icon: PencilAltIcon,
   },
   {
-    name: 'Team Reporting',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart Laboratory',
+    description: 'Smart integration of lab activities.',
     icon: DocumentReportIcon,
   },
   {
-    name: 'Saved Replies',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Digital Specifications',
+    description: 'Digital control of specifications.',
     icon: ReplyIcon,
   },
   {
-    name: 'Email Commenting',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart GFSI',
+    description: 'Smart compliance to GFSI standards.',
     icon: ChatAltIcon,
   },
   {
-    name: 'Connect with Customers',
-    description:
-      'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart EMP',
+    description: 'Digital assurance of Plant environment.',
     icon: HeartIcon,
   },
 ];
@@ -106,8 +98,8 @@ export default function HomeV2() {
         {/* Hero section */}
         <div className='relative'>
           <div className='absolute inset-x-0 bottom-0 h-1/2 bg-gray-100' />
-          <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
-            <div className='relative shadow-xl sm:overflow-hidden sm:rounded-2xl'>
+          <div className=''>
+            <div className='relative shadow-xl sm:overflow-hidden '>
               <div className='absolute inset-0'>
                 <img
                   className='h-full w-full object-cover'
@@ -118,7 +110,7 @@ export default function HomeV2() {
               </div>
               <div className='relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8'>
                 <h1 className='text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl'>
-                  <span className='block text-white'>Take control of your</span>
+                  {/* <span className='block text-white'>Take control of your</span> */}
                   <span className='block text-indigo-200'>
                     Quality. Sustainability. Technology.
                   </span>
@@ -155,7 +147,8 @@ export default function HomeV2() {
         <div className='bg-gray-100'>
           <div className='mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8'>
             <p className='text-center text-sm font-semibold uppercase tracking-wide text-gray-500'>
-              Trusted by over 5 very average small businesses
+              Food safety solutions created by the experts from renowned
+              companies
             </p>
             <div className='mt-6 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5'>
               <div className='col-span-1 flex justify-center md:col-span-2 lg:col-span-1'>
@@ -239,7 +232,7 @@ export default function HomeV2() {
                     </div>
                   </div>
                 </div>
-                <div className='mt-8 border-t border-gray-200 pt-6'>
+                {/* <div className='mt-8 border-t border-gray-200 pt-6'>
                   <blockquote>
                     <div>
                       <p className='text-base text-gray-500'>
@@ -263,7 +256,7 @@ export default function HomeV2() {
                       </div>
                     </footer>
                   </blockquote>
-                </div>
+                </div> */}
               </div>
               <div className='mt-12 sm:mt-16 lg:mt-0'>
                 <div className='-mr-48 pl-4 sm:pl-6 md:-mr-16 lg:relative lg:m-0 lg:h-full lg:px-0'>
@@ -389,11 +382,11 @@ export default function HomeV2() {
               <p className='mt-3 text-3xl font-extrabold text-white'>
                 Get actionable data that will help grow your business
               </p>
-              <p className='mt-5 text-lg text-gray-300'>
+              {/* <p className='mt-5 text-lg text-gray-300'>
                 “It’s a personal decision. It’s a hard and painful decision.
                 It’s an emotional, fraught decision. However, shutting down
                 doesn’t have to be a blind decision.”
-              </p>
+              </p> */}
               <div className='mt-12 grid grid-cols-1 gap-y-12 gap-x-6 sm:grid-cols-2'>
                 {metrics.map((item) => (
                   <p key={item.id}>

@@ -18,6 +18,7 @@ import DashboardBreadcrumbs from 'components/Breadcrumbs/dashboard';
 import { set, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import AddRecordModal from 'components/modal/AddRecord';
 
 const tabs = [
   {
@@ -96,21 +97,6 @@ const tabs = [
   },
 ];
 
-const Record = [
-  {
-    SupplierName: 'Lindsay Walton',
-    Category: 'food',
-    ProductName: 'Product',
-    GST: 'xx xx xxxx xxx',
-    FSSAILicenseNo: 'xx xxxxx xxx',
-    Location: 'delhi',
-    Address: 'south delhi',
-    SupplyingLocation: 'west delhi',
-    SKU: 'sku',
-  },
-  // More Record...
-];
-
 const actions = [
   {
     title: 'Approved supplier',
@@ -142,6 +128,17 @@ const actions = [
   },
 ];
 
+type Record = {
+  Lno: string;
+  Location: string;
+  Pname: string;
+  address: string;
+  category: string;
+  gstNo: string;
+  sLoc: string;
+  sName: string;
+  sku: string;
+};
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
@@ -157,19 +154,9 @@ function PurchasePage({}: InferGetServerSidePropsType<
   } = useForm();
 
   const router = useRouter();
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState<Record[]>([]);
+  const [open, setOpen] = useState(false);
 
-  const onSubmit = (data: any) => {
-    const pur = window.localStorage.getItem(router.asPath);
-    window.localStorage.setItem(router.asPath, JSON.stringify(data));
-
-    console.log({ data, pur });
-    let score = 0;
-    Object.values(data).forEach((answer) => {
-      if (answer !== 'No') score++;
-    });
-    console.log({ score });
-  };
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -177,254 +164,167 @@ function PurchasePage({}: InferGetServerSidePropsType<
     if (locdata) {
       const parseLocData = JSON.parse(locdata);
       setRecords(parseLocData);
+    } else {
+      setRecords([]);
     }
-  }, []);
+  });
   console.log({ records });
 
   return (
     <DocumentationLayout>
+      <section>
+        <div className='sm:flex sm:items-center'>
+          <div className='sm:flex-auto'>
+            <h1 className='text-xl font-semibold text-gray-900'>
+              {' '}
+              Hi @{session?.user?.name}
+            </h1>
+            {/* 
+            <p className='mt-2 text-sm text-gray-700'>
+              A list of all the users in your account including their name,
+              title, email and role.
+            </p> */}
+          </div>
+          <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
+            <button
+              onClick={() => setOpen(true)}
+              type='button'
+              className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
+            >
+              Add record
+            </button>
+          </div>
+          {open && <AddRecordModal open={open} setOpen={setOpen} />}
+        </div>
+      </section>
       <section className=''>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <table className='min-w-full divide-y divide-gray-300'>
-            <thead className='bg-gray-50'>
-              <tr>
-                <th
-                  scope='col'
-                  className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6'
-                >
-                  Sr No
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Supplier name
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Category
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Products name
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  GST NO
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  FSSAI License no
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Location
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Address
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  Supplying location
-                </th>
-                <th
-                  scope='col'
-                  className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                >
-                  SKU
-                </th>
-                <th scope='col' className='relative py-3.5 pl-3 pr-4 sm:pr-6'>
-                  <span className='sr-only'>Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className='divide-y divide-gray-200 bg-white'>
-              {Record.map((person, index) => (
-                <tr key={person.GST + person.Address + person.Location}>
-                  <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
-                    {index + 1}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.SupplierName}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.Category}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.ProductName}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.GST}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.FSSAILicenseNo}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.Location}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.Address}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.SupplyingLocation}
-                  </td>
-                  <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                    {person.SKU}
-                  </td>
-                  <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                    <button className='text-indigo-600 hover:text-indigo-900'>
-                      Edit
-                      <span className='sr-only'>, {person.SupplierName}</span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              <tr>
-                <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'></td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='sName' className='sr-only'>
-                      Supplier name
-                    </label>
-                    <input
-                      type='sName'
-                      id='sName'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      {...register('sName')}
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='category' className='sr-only'>
-                      category
-                    </label>
-                    <input
-                      type='category'
-                      id='category'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                      {...register('category')}
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='Pname' className='sr-only'>
-                      Pname
-                    </label>
-                    <input
-                      type='Pname'
-                      {...register('Pname')}
-                      id='Pname'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='gstNo' className='sr-only'>
-                      gstNo
-                    </label>
-                    <input
-                      type='gstNo'
-                      {...register('gstNo')}
-                      id='gstNo'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='Lno' className='sr-only'>
-                      Lno
-                    </label>
-                    <input
-                      type='Lno'
-                      {...register('Lno')}
-                      id='Lno'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='Location' className='sr-only'>
-                      Location
-                    </label>
-                    <input
-                      type='Location'
-                      {...register('Location')}
-                      id='Location'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='address' className='sr-only'>
-                      address
-                    </label>
-                    <input
-                      type='address'
-                      {...register('address')}
-                      id='address'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='sLoc' className='sr-only'>
-                      sLoc
-                    </label>
-                    <input
-                      type='sLoc'
-                      {...register('sLoc')}
-                      id='sLoc'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                  <div>
-                    <label htmlFor='sku' className='sr-only'>
-                      sku
-                    </label>
-                    <input
-                      type='sku'
-                      {...register('sku')}
-                      id='sku'
-                      className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                    />
-                  </div>
-                </td>
-                <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                  <button
-                    type='submit'
-                    className='text-indigo-600 hover:text-indigo-900'
-                  >
-                    Submit
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
+        <div className='mt-8 flex flex-col'>
+          <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
+            <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
+              <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'>
+                <table className='min-w-full divide-y divide-gray-300'>
+                  <thead className='bg-gray-50'>
+                    <tr>
+                      <th
+                        scope='col'
+                        className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6'
+                      >
+                        Sr No
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Supplier name
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Category
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Products name
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        GST NO
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        FSSAI License no
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Location
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Address
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        Supplying location
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                      >
+                        SKU
+                      </th>
+                      <th
+                        scope='col'
+                        className='relative py-3.5 pl-3 pr-4 sm:pr-6'
+                      >
+                        <span className='sr-only'>Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className='divide-y divide-gray-200 bg-white'>
+                    {records.map((record, index) => (
+                      <tr key={record.sName + index}>
+                        <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
+                          {index + 1}
+                        </td>
+                        <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
+                          {record.sName}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.category}
+                        </td>
+
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.Pname}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.gstNo}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.Lno}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.Location}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.address}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.sLoc}
+                        </td>
+
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.sku}
+                        </td>
+                        {/* <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                          <a
+                            href='#'
+                            className='text-indigo-600 hover:text-indigo-900'
+                          >
+                            Edit
+                            <span className='sr-only'>, {record.Pname}</span>
+                          </a>
+                        </td> */}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <style jsx>{`
         td {
