@@ -2,6 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DashboardLayout from 'layouts/dashboard';
 import { getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 const tabs = [
   { name: 'General', href: '#', current: true },
@@ -16,10 +17,24 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+type CompanyDetails = {
+  companyName: string;
+  gst: string;
+};
+
 function DashBoardPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
+  const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(
+    null
+  );
+
+  useEffect(() => {
+    const data = window.localStorage.getItem('companyDetails');
+    if (data) setCompanyDetails(JSON.parse(data));
+  }, []);
+
   return (
     <DashboardLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
@@ -201,6 +216,63 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                       </dt>
                       <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
                         <span className='flex-grow'>DD-MM-YYYY</span>
+                        <span className='ml-4 flex flex-shrink-0 items-start space-x-4'>
+                          {/* <button
+                            type='button'
+                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
+                          >
+                            Update
+                          </button>
+                          <span className='text-gray-300' aria-hidden='true'>
+                            |
+                          </span>
+                          <button
+                            type='button'
+                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
+                          >
+                            Remove
+                          </button> */}
+                        </span>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+              <div className='mt-10 divide-y divide-gray-200'>
+                <div className='space-y-1'>
+                  <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                    Company Details
+                  </h3>
+                  <p className='max-w-2xl text-sm text-gray-500'>
+                    This information will not be shared with anyone.
+                  </p>
+                </div>
+                <div className='mt-6'>
+                  <dl className='divide-y divide-gray-200'>
+                    <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        Company Name
+                      </dt>
+                      <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
+                        <span className='flex-grow'>
+                          {companyDetails?.companyName}
+                        </span>
+                        <span className='ml-4 flex-shrink-0'>
+                          {/* <button
+                            type='button'
+                            className='rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
+                          >
+                            Update
+                          </button> */}
+                        </span>
+                      </dd>
+                    </div>
+                    <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5'>
+                      <dt className='text-sm font-medium text-gray-500'>
+                        GST No.
+                      </dt>
+                      <dd className='mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
+                        <span className='flex-grow'>{companyDetails?.gst}</span>
                         <span className='ml-4 flex flex-shrink-0 items-start space-x-4'>
                           {/* <button
                             type='button'

@@ -30,6 +30,85 @@ import {
   XIcon,
 } from '@heroicons/react/outline';
 
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
+import { useEffect, useState } from 'react';
+
+const data = [
+  {
+    name: 'Page A',
+    pc: 4000,
+    c: 2400,
+    amt: 2400,
+  },
+  {
+    name: 'Page B',
+    pc: 3000,
+    c: 1398,
+    amt: 2210,
+  },
+  {
+    name: 'Page C',
+    pc: 2000,
+    c: 9800,
+    amt: 2290,
+  },
+  {
+    name: 'Page D',
+    pc: 2780,
+    c: 3908,
+    amt: 2000,
+  },
+  {
+    name: 'Page E',
+    pc: 1890,
+    c: 4800,
+    amt: 2181,
+  },
+  {
+    name: 'Page F',
+    pc: 2390,
+    c: 3800,
+    amt: 2500,
+  },
+  {
+    name: 'Page G',
+    pc: 3490,
+    c: 4300,
+    amt: 2100,
+  },
+];
+const data01 = [
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 },
+  { name: 'Group E', value: 278 },
+  { name: 'Group F', value: 189 },
+];
+
+const data02 = [
+  { name: 'Group A', value: 2400 },
+  { name: 'Group B', value: 4567 },
+  { name: 'Group C', value: 1398 },
+  { name: 'Group D', value: 9800 },
+  { name: 'Group E', value: 3908 },
+  { name: 'Group F', value: 4800 },
+];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
 const tabs = [
   {
     name: 'Purchase',
@@ -156,11 +235,24 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+type CompanyDetails = {
+  companyName: string;
+  gst: string;
+};
+
 function SmartDocumentationPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(
+    null
+  );
+
+  useEffect(() => {
+    const data = window.localStorage.getItem('companyDetails');
+    if (data) setCompanyDetails(JSON.parse(data));
+  }, []);
   return (
     <DocumentationLayout>
       <div className='relative mx-auto max-w-4xl md:px-8 xl:px-0'>
@@ -209,7 +301,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                                     className='mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400'
                                     aria-hidden='true'
                                   />
-                                  Zomato Ltd.
+                                  {companyDetails?.companyName}
                                 </dd>
                                 <dt className='sr-only'>Account status</dt>
                                 <dd className='mt-3 flex items-center text-sm font-medium capitalize text-gray-500 sm:mr-6 sm:mt-0'>
@@ -247,8 +339,68 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                         Overview
                       </h2>
                       <div className='mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
+                        <div>
+                          <PieChart width={800} height={400}>
+                            <Pie
+                              data={data01}
+                              cx={120}
+                              cy={200}
+                              innerRadius={60}
+                              outerRadius={80}
+                              fill='#8884d8'
+                              paddingAngle={5}
+                              dataKey='value'
+                            >
+                              {data01.map((entry, index) => (
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={COLORS[index % COLORS.length]}
+                                />
+                              ))}
+                            </Pie>
+                            <Pie
+                              data={data02}
+                              cx={420}
+                              cy={200}
+                              startAngle={180}
+                              endAngle={0}
+                              innerRadius={60}
+                              outerRadius={80}
+                              fill='#8884d8'
+                              paddingAngle={5}
+                              dataKey='value'
+                            >
+                              {data02.map((entry, index) => (
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={COLORS[index % COLORS.length]}
+                                />
+                              ))}
+                            </Pie>
+                            <Tooltip />
+                          </PieChart>
+                          <BarChart
+                            width={500}
+                            height={300}
+                            data={data}
+                            margin={{
+                              top: 5,
+                              right: 30,
+                              left: 20,
+                              bottom: 5,
+                            }}
+                          >
+                            <CartesianGrid strokeDasharray='3 3' />
+                            <XAxis dataKey='name' />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey='c' fill='#8884d8' />
+                            <Bar dataKey='pc' fill='#82ca9d' />
+                          </BarChart>
+                        </div>
                         {/* Card */}
-                        {cards.map((card) => (
+                        {/* {cards.map((card) => (
                           <div
                             key={card.name}
                             className='overflow-hidden rounded-lg bg-white shadow'
@@ -286,7 +438,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ))} */}
                       </div>
                     </div>
 

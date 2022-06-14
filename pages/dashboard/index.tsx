@@ -2,7 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DashboardLayout from 'layouts/dashboard';
 import { signIn, getSession, useSession } from 'next-auth/react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 import {
   ChevronRightIcon,
@@ -56,10 +56,23 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+type CompanyDetails = {
+  companyName: string;
+  gst: string;
+};
+
 function DashBoardPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
+  const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(
+    null
+  );
+
+  useEffect(() => {
+    const data = window.localStorage.getItem('companyDetails');
+    if (data) setCompanyDetails(JSON.parse(data));
+  }, []);
   return (
     <DashboardLayout>
       {/* Page title & actions */}
@@ -104,7 +117,11 @@ function DashBoardPage({}: InferGetServerSidePropsType<
                   'flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white'
                 )}
               >
-                {project.initials}
+                {companyDetails?.companyName
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase() || project.initials}
               </div>
               <div className='flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white'>
                 <div className='flex-1 truncate px-4 py-2 text-sm'>
