@@ -168,7 +168,6 @@ function PurchasePage({}: InferGetServerSidePropsType<
       setRecords([]);
     }
   });
-  console.log({ records });
 
   return (
     <DocumentationLayout>

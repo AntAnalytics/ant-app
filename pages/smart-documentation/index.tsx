@@ -350,6 +350,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                               fill='#8884d8'
                               paddingAngle={5}
                               dataKey='value'
+                              label
                             >
                               {data01.map((entry, index) => (
                                 <Cell
@@ -369,6 +370,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                               fill='#8884d8'
                               paddingAngle={5}
                               dataKey='value'
+                              label
                             >
                               {data02.map((entry, index) => (
                                 <Cell

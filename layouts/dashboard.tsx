@@ -20,15 +20,44 @@ import Link from 'next/link';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  // { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  // { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   {
     name: 'Smart Documents',
     href: '/smart-documentation',
     icon: InboxIcon,
   },
-  // { name: 'Reports', href: '#', icon: ChartBarIcon },
+  {
+    name: 'Smart Auditing System',
+    href: '/checklist/fssai-mandatory',
+    icon: BellIcon,
+  },
+  {
+    name: 'Tech Based Regulatory Compliance',
+    href: '/commingsoon',
+    icon: UsersIcon,
+  },
+  {
+    name: 'Smart Food Safety Management System',
+    href: '/commingsoon',
+    icon: FolderIcon,
+  },
+  {
+    name: 'VR Based Training System  ',
+    href: '/commingsoon',
+    icon: CalendarIcon,
+  },
+  {
+    name: 'Smart Supplier Management System  ',
+    href: '/commingsoon',
+    icon: ChartBarIcon,
+  },
+  { name: 'Smart Laboratory  ', href: '/commingsoon', icon: ChartBarIcon },
+  {
+    name: 'Digital Specifications  ',
+    href: '/commingsoon',
+    icon: ChartBarIcon,
+  },
+  { name: 'Smart GFSI  ', href: '/commingsoon', icon: ChartBarIcon },
+  { name: 'Smart  EMP', href: '/commingsoon', icon: ChartBarIcon },
 ];
 const userNavigation = [
   { name: 'Settings', href: '/setting' },
@@ -47,6 +76,7 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
 }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const ActiveFeatures = 3;
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -158,28 +188,35 @@ const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
             </div>
             <div className='flex flex-1 flex-col overflow-y-auto'>
               <nav className='flex-1 space-y-1 px-2 py-4'>
-                {navigation.map((item) => (
-                  <Link key={item.name} href={item.href}>
-                    <a
-                      className={classNames(
-                        router.asPath.includes(item.href)
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
-                      )}
-                    >
-                      <item.icon
+                {navigation.map((item, index) => (
+                  <>
+                    {index === ActiveFeatures && (
+                      <span className='ml-4 text-white/75'>
+                        --- comming soon ---
+                      </span>
+                    )}
+                    <Link key={item.name} href={item.href}>
+                      <a
                         className={classNames(
                           router.asPath.includes(item.href)
-                            ? 'text-gray-300'
-                            : 'text-gray-400 group-hover:text-gray-300',
-                          'mr-3 h-6 w-6 flex-shrink-0'
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
                         )}
-                        aria-hidden='true'
-                      />
-                      {item.name}
-                    </a>
-                  </Link>
+                      >
+                        <item.icon
+                          className={classNames(
+                            router.asPath.includes(item.href)
+                              ? 'text-gray-300'
+                              : 'text-gray-400 group-hover:text-gray-300',
+                            'mr-3 h-6 w-6 flex-shrink-0'
+                          )}
+                          aria-hidden='true'
+                        />
+                        {item.name}
+                      </a>
+                    </Link>
+                  </>
                 ))}
               </nav>
             </div>
