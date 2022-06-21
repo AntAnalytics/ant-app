@@ -11,7 +11,7 @@ const tabs = [
   //   { name: 'Notifications', href: '#', current: false },
   //   { name: 'Plan', href: '#', current: false },
   //   { name: 'Billing', href: '#', current: false },
-  //   { name: 'Team Members', href: '#', current: false },
+  { name: 'Team Members', href: '#', current: false },
 ];
 
 function classNames(...classes: string[]) {

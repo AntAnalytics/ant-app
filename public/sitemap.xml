@@ -5,6 +5,10 @@
   </url>
 
   <url>
+    <loc>https://skillabit.com/commingsoon</loc>
+  </url>
+
+  <url>
     <loc>https://skillabit.com/contact</loc>
   </url>
 
@@ -17,6 +21,14 @@
   </url>
 
   <url>
+    <loc>https://skillabit.com/onboarding</loc>
+  </url>
+
+  <url>
     <loc>https://skillabit.com/setting</loc>
+  </url>
+
+  <url>
+    <loc>https://skillabit.com/welcome</loc>
   </url>
 </urlset>
