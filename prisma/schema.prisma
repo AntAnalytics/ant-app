@@ -48,4 +48,5 @@ model User {
 enum Role {
   USER
   ADMIN
+  OWNER
 }
