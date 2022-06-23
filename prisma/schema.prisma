@@ -42,11 +42,24 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  employeeId    String?
+  company       String?
+  department    String?
+  designation   String?
+  site          Site?     @relation(fields: [siteId], references: [id])
   role          Role      @default(value: USER)
+  siteId        String?   @db.ObjectId
+}
+
+model Site {
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  User User[]
 }
 
 enum Role {
   USER
   ADMIN
+  MANAGER
   OWNER
 }
