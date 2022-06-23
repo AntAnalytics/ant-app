@@ -319,6 +319,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  if (session.user.role !== 'OWNER') {
+    return {
+      redirect: {
+        destination: '/setting/team-members',
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       // session,
