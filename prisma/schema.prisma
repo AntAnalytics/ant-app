@@ -36,24 +36,26 @@ model Session {
 
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
   accounts      Account[]
-  sessions      Session[]
-  employeeId    String?
-  company       String?
-  department    String?
-  designation   String?
-  site          Site?     @relation(fields: [siteId], references: [id])
+  company       String    @default("JW")
+  department    String
+  designation   String
+  email         String    @unique
+  emailVerified DateTime?
+  employeeId    String
+  image         String?
+  name          String
+  password      String
+  mobile        String
   role          Role      @default(value: USER)
+  sessions      Session[]
+  site          Site?     @relation(fields: [siteId], references: [id])
   siteId        String?   @db.ObjectId
 }
 
 model Site {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
   User User[]
 }
 
