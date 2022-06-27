@@ -4,6 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from 'lib/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import http from 'services/httpService';
+import { User } from '@prisma/client';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -25,8 +26,6 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-
         const res = await http.post('/auth/login', {
           email: credentials?.email,
           password: credentials?.password,
@@ -82,14 +81,13 @@ export default NextAuth({
     // async signIn({ user, account, profile, email, credentials }) { return true },
     // async redirect({ url, baseUrl }) { return baseUrl },
     async session({ session, token, user }) {
-      const userInfo = await prisma.user.findFirst({
-        where: { id: token.sub },
-        include: { site: true },
-      });
-      if (userInfo) session.user = userInfo;
+      session.user = token.user as User;
       return Promise.resolve(session);
     },
-    // async jwt({ token, user, account, profile, isNewUser }) { return token }
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) token.user = user;
+      return token;
+    },
   },
 
   // https://next-auth.js.org/configuration/events

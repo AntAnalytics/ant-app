@@ -27,6 +27,8 @@ function DashBoardPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
+  console.log({ session });
+
   const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(
     null
   );

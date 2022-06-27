@@ -250,12 +250,13 @@ export default function MainNavBar() {
               </a>
             </Link>
           ) : (
-            <button
-              onClick={() => signIn('google')}
-              className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'
-            >
-              Sign in
-            </button>
+            <Link href='/signin'>
+              <a>
+                <button className='whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900'>
+                  Sign in
+                </button>
+              </a>
+            </Link>
           )}
         </div>
       </div>
