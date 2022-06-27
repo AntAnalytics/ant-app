@@ -3,30 +3,52 @@ import DashboardLayout from 'layouts/dashboard';
 import { getSession, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { addUser } from 'services/userService';
+import { addUser, editUserById, getUserById } from 'services/userService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { User } from '@prisma/client';
 
 function AddTeamMemberPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const { data: session, status } = useSession();
+  const router = useRouter();
+  const {
+    query: { id },
+  } = router;
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data: any) => {
     try {
-      const res = await addUser(data);
-      toast.success('✅ User successfully added.');
+      if (id) {
+        editUserById(id.toString(), data).then(() =>
+          toast.success('✅ User successfully updated.')
+        );
+      } else {
+        addUser(data).then(() => toast.success('✅ User successfully added.'));
+      }
     } catch (error: any) {
       toast.error(error?.response.data.message);
     }
   };
+
+  useEffect(() => {
+    if (!id) return;
+    getUserById(id as string)
+      .then((res) => reset(res.data.user))
+      .catch((error: any) => toast.error(error?.response.data.message));
+  }, [id]);
+
+  const watchAllFields = watch();
+  console.log({ watchAllFields });
 
   return (
     <DashboardLayout>
@@ -60,7 +82,9 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
                   </span>
                   <input
                     type='text'
-                    {...register('employeeId', { required: true })}
+                    {...register('employeeId', {
+                      required: true,
+                    })}
                     required
                     id='employeeId'
                     autoComplete='employeeId'

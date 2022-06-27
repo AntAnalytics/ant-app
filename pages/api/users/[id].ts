@@ -2,18 +2,24 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from 'lib/prisma';
 import { getSession } from 'next-auth/react';
 const Joi = require('joi');
-const bcrypt = require('bcrypt');
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req;
+  const {
+    method,
+    query: { id },
+  } = req;
+  const session = await getSession({ req });
 
   switch (method) {
     case 'GET':
       try {
-        const users = await prisma?.user.findMany({
+        const user = await prisma?.user.findUnique({
+          where: {
+            id: id.toString(),
+          },
           select: {
             id: true,
             site: true,
@@ -27,17 +33,48 @@ export default async function handler(
             mobile: true,
           },
         });
-        return res.status(200).json({ success: true, users });
+        if (!user) {
+          return res.status(400).json({
+            success: false,
+            message: 'User not found with this id.',
+          });
+        }
+
+        return res.status(200).json({ success: true, user });
       } catch (error) {
         res
           .status(500)
           .json({ success: false, message: 'Something went wrong.', error });
       }
       break;
+    case 'DELETE' /* Delete a model by its email */:
+      if (!session || session.user.role !== 'OWNER') {
+        return res
+          .status(403)
+          .send({ success: false, message: 'Unauthorized' });
+      }
+      try {
+        const deletedUser = await prisma.user.delete({
+          where: {
+            id: id.toString(),
+          },
+        });
+        if (!deletedUser) {
+          return res
+            .status(404)
+            .json({ success: false, message: 'User Already Deleted.' });
+        }
+        res
+          .status(200)
+          .json({ success: true, message: 'User deleted successfully' });
+      } catch (error) {
+        res
+          .status(400)
+          .json({ success: false, message: 'Something went wrong.', error });
+      }
+      break;
 
-    case 'POST':
-      const session = await getSession({ req });
-
+    case 'PUT':
       if (!session || session.user.role !== 'OWNER') {
         return res
           .status(403)
@@ -52,21 +89,10 @@ export default async function handler(
             message: error.details[0].message,
           });
 
-        const userExist = await prisma.user.findFirst({
+        const updatedUser = await prisma.user.update({
           where: {
-            email: req.body.email,
+            id: id.toString(),
           },
-        });
-
-        if (userExist)
-          return res
-            .status(400)
-            .json({ success: false, message: 'User already exist.' });
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-        const newUser = await prisma.user.create({
           data: {
             employeeId: req.body.employeeId,
             name: req.body.name,
@@ -76,10 +102,12 @@ export default async function handler(
             designation: req.body.designation,
             role: req.body.role,
             mobile: req.body.mobile,
-            password: hashedPassword,
           },
         });
-        res.status(201).json({ success: true, newUser });
+
+        return res
+          .status(200)
+          .json({ success: true, message: 'Updated Successfully.' });
       } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -106,14 +134,14 @@ function validate(user: any) {
     designation: Joi.string().required(),
     role: Joi.string().required(),
     mobile: Joi.string().length(10).trim().required(),
-    password: Joi.string()
-      .min(8)
-      .pattern(
-        new RegExp(
-          '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
-        )
-      )
-      .required(),
+    // password: Joi.string()
+    //   .min(8)
+    //   .pattern(
+    //     new RegExp(
+    //       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+    //     )
+    //   )
+    //   .required(),
   });
 
   return schema.validate(user);
