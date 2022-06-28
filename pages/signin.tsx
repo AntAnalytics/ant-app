@@ -1,6 +1,7 @@
 import { SignInResponse } from 'lib/types';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -191,12 +192,11 @@ function SignInPage() {
                     </div> */}
 
                     <div className='text-sm'>
-                      <a
-                        href='#'
-                        className='font-medium text-indigo-600 hover:text-indigo-500'
-                      >
-                        Forgot your password?
-                      </a>
+                      <Link href='/reset-password'>
+                        <a className='font-medium text-indigo-600 hover:text-indigo-500'>
+                          Forgot your password?
+                        </a>
+                      </Link>
                     </div>
                   </div>
 

@@ -4,7 +4,7 @@ import { getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getUsers } from 'services/userService';
+import { getUsers, isOwner } from 'services/userService';
 import { User } from '@prisma/client';
 
 const tabs = [
@@ -167,10 +167,10 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                                     </td>
                                     <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                                       <div className='text-gray-900'>
-                                        Director, Product Development
+                                        {user.department}
                                       </div>
                                       <div className='text-gray-500'>
-                                        Security
+                                        {user.designation}
                                       </div>
                                     </td>
                                     <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
@@ -182,16 +182,18 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                                       {user.role}
                                     </td>
                                     <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                                      <Link
-                                        href={`/setting/add-member?id=${user.id}`}
-                                      >
-                                        <a className='text-indigo-600 hover:text-indigo-900'>
-                                          Edit
-                                          <span className='sr-only'>
-                                            , {user.name}
-                                          </span>
-                                        </a>
-                                      </Link>
+                                      {!isOwner(user.role) && (
+                                        <Link
+                                          href={`/setting/add-member?id=${user.id}`}
+                                        >
+                                          <a className='text-indigo-600 hover:text-indigo-900'>
+                                            Edit
+                                            <span className='sr-only'>
+                                              , {user.name}
+                                            </span>
+                                          </a>
+                                        </Link>
+                                      )}
                                     </td>
                                   </tr>
                                 ))}

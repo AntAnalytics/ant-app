@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from 'lib/prisma';
 import { getSession } from 'next-auth/react';
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 
 export default async function handler(
   req: NextApiRequest,
@@ -89,6 +90,17 @@ export default async function handler(
             message: error.details[0].message,
           });
 
+        const owner = await prisma.user.findFirst({ where: { role: 'OWNER' } });
+        const isPasswordSame = await bcrypt.compare(
+          req.body.password,
+          owner?.password || ''
+        );
+        if (!isPasswordSame)
+          return res.status(400).json({
+            success: false,
+            message: 'Incorrect Password.',
+          });
+
         const updatedUser = await prisma.user.update({
           where: {
             id: id.toString(),
@@ -127,21 +139,24 @@ export default async function handler(
 
 function validate(user: any) {
   const schema = Joi.object({
+    id: Joi.string(),
     employeeId: Joi.string().required(),
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     department: Joi.string().required(),
     designation: Joi.string().required(),
+    image: Joi.string(),
     role: Joi.string().required(),
     mobile: Joi.string().length(10).trim().required(),
-    // password: Joi.string()
-    //   .min(8)
-    //   .pattern(
-    //     new RegExp(
-    //       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
-    //     )
-    //   )
-    //   .required(),
+    password: Joi.string()
+      .min(8)
+      .pattern(
+        new RegExp(
+          '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+        )
+      )
+      .required(),
+    site: Joi.string().allow(null),
   });
 
   return schema.validate(user);

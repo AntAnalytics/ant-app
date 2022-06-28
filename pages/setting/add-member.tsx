@@ -7,7 +7,6 @@ import { addUser, editUserById, getUserById } from 'services/userService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { User } from '@prisma/client';
 
 function AddTeamMemberPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -29,11 +28,17 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
   const onSubmit = async (data: any) => {
     try {
       if (id) {
-        editUserById(id.toString(), data).then(() =>
-          toast.success('✅ User successfully updated.')
-        );
+        editUserById(id.toString(), data)
+          .then(() => {
+            toast.success('User successfully updated.');
+            router.push('/setting/team-members');
+          })
+          .catch((error) => toast.error(error?.response.data.message));
       } else {
-        addUser(data).then(() => toast.success('✅ User successfully added.'));
+        addUser(data).then(() => {
+          toast.success('User successfully added.');
+          router.push('/setting/team-members');
+        });
       }
     } catch (error: any) {
       toast.error(error?.response.data.message);
@@ -44,8 +49,8 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
     if (!id) return;
     getUserById(id as string)
       .then((res) => reset(res.data.user))
-      .catch((error: any) => toast.error(error?.response.data.message));
-  }, [id]);
+      .catch((error: any) => router.push('/setting/add-member'));
+  }, [id, reset, router]);
 
   const watchAllFields = watch();
   console.log({ watchAllFields });
@@ -90,6 +95,67 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
                     autoComplete='employeeId'
                     className='block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
+                </div>
+              </div>
+              <div className='sm:col-span-3'>
+                <label
+                  htmlFor='department'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Department
+                </label>
+                <div className='mt-1'>
+                  <select
+                    id='department'
+                    {...register('department', { required: true })}
+                    required
+                    autoComplete='department-name'
+                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                  >
+                    <option>Purchase</option>
+                    <option>Store</option>
+                    <option>Kitchen</option>
+                  </select>
+                </div>
+              </div>
+              <div className='sm:col-span-4'>
+                <label
+                  htmlFor='designation'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Designation
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    {...register('designation', { required: true })}
+                    required
+                    id='designation'
+                    autoComplete='given-name'
+                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                  />
+                </div>
+              </div>
+
+              <div className='sm:col-span-3'>
+                <label
+                  htmlFor='role'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Role
+                </label>
+                <div className='mt-1'>
+                  <select
+                    id='role'
+                    {...register('role', { required: true })}
+                    required
+                    autoComplete='role-name'
+                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                  >
+                    <option>USER</option>
+                    <option>ADMIN</option>
+                    <option>MANAGER</option>
+                  </select>
                 </div>
               </div>
 
@@ -167,68 +233,6 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
                     autoComplete='mobile'
                     className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
-                </div>
-              </div>
-
-              <div className='sm:col-span-3'>
-                <label
-                  htmlFor='department'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Department
-                </label>
-                <div className='mt-1'>
-                  <select
-                    id='department'
-                    {...register('department', { required: true })}
-                    required
-                    autoComplete='department-name'
-                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                  >
-                    <option>Purchase</option>
-                    <option>Store</option>
-                    <option>Kitchen</option>
-                  </select>
-                </div>
-              </div>
-              <div className='sm:col-span-4'>
-                <label
-                  htmlFor='designation'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Designation
-                </label>
-                <div className='mt-1'>
-                  <input
-                    type='text'
-                    {...register('designation', { required: true })}
-                    required
-                    id='designation'
-                    autoComplete='given-name'
-                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                  />
-                </div>
-              </div>
-
-              <div className='sm:col-span-3'>
-                <label
-                  htmlFor='role'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Role
-                </label>
-                <div className='mt-1'>
-                  <select
-                    id='role'
-                    {...register('role', { required: true })}
-                    required
-                    autoComplete='role-name'
-                    className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                  >
-                    <option>USER</option>
-                    <option>ADMIN</option>
-                    <option>MANAGER</option>
-                  </select>
                 </div>
               </div>
 
@@ -342,7 +346,7 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
                 htmlFor='password'
                 className='block text-sm font-medium text-gray-700'
               >
-                Password
+                {id ? 'Master' : 'New'} Password
               </label>
               <div className='mt-1'>
                 <input
@@ -351,7 +355,7 @@ function AddTeamMemberPage({}: InferGetServerSidePropsType<
                   required
                   type='password'
                   minLength={8}
-                  autoComplete='password'
+                  autoComplete='new-password'
                   className='block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                 />
               </div>

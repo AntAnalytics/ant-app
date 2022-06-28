@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import http from './httpService';
 
 export function getUsers() {
@@ -15,4 +15,12 @@ export function getUserById(id: string) {
 
 export function editUserById(id: string, user: User) {
   return http.put(`/users/${id}`, user);
+}
+
+export function isOwner(role: Role) {
+  return role === 'OWNER';
+}
+
+export function resetPassword(data: any) {
+  return http.put('/users/reset-password', data);
 }
