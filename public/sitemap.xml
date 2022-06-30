@@ -25,7 +25,15 @@
   </url>
 
   <url>
-    <loc>https://skillabit.com/setting</loc>
+    <loc>https://skillabit.com/request-reset-password</loc>
+  </url>
+
+  <url>
+    <loc>https://skillabit.com/reset-password</loc>
+  </url>
+
+  <url>
+    <loc>https://skillabit.com/signin</loc>
   </url>
 
   <url>

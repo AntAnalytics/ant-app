@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getUsers, isOwner } from 'services/userService';
 import { User } from '@prisma/client';
-
+import { TrashIcon, PencilAltIcon } from '@heroicons/react/outline';
+import Deactivate from 'components/modal/deactivate';
 const tabs = [
   { name: 'General', href: '/setting', current: false },
   //   { name: 'Password', href: '#', current: false },
@@ -25,7 +26,7 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
 >) {
   const { data: session, status } = useSession();
 
-  console.log({ session });
+  const [open, setOpen] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -91,18 +92,20 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                           their name, title, email and role.
                         </p>
                       </div>
-                      <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
-                        <Link href='/setting/add-member'>
-                          <a>
-                            <button
-                              type='button'
-                              className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
-                            >
-                              Add user
-                            </button>
-                          </a>
-                        </Link>
-                      </div>
+                      {session?.user?.role === 'OWNER' && (
+                        <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
+                          <Link href='/setting/add-member'>
+                            <a>
+                              <button
+                                type='button'
+                                className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
+                              >
+                                Add user
+                              </button>
+                            </a>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                     <div className='mt-8 flex flex-col'>
                       <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
@@ -140,6 +143,12 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                                     className='relative py-3.5 pl-3 pr-4 sm:pr-6'
                                   >
                                     <span className='sr-only'>Edit</span>
+                                  </th>
+                                  <th
+                                    scope='col'
+                                    className='relative py-3.5 pl-3 pr-4 sm:pr-6'
+                                  >
+                                    <span className='sr-only'>Delete</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -186,13 +195,28 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                                         <Link
                                           href={`/setting/add-member?id=${user.id}`}
                                         >
-                                          <a className='text-indigo-600 hover:text-indigo-900'>
+                                          <a className='flex items-center text-indigo-600 hover:text-indigo-900'>
+                                            <PencilAltIcon className='mr-1 h-4 w-4' />{' '}
                                             Edit
                                             <span className='sr-only'>
                                               , {user.name}
                                             </span>
                                           </a>
                                         </Link>
+                                      )}
+                                    </td>
+                                    <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                                      {!isOwner(user.role) && (
+                                        <button
+                                          onClick={() => setOpen(true)}
+                                          className='flex items-center text-red-600 hover:text-red-500'
+                                        >
+                                          <TrashIcon className='mr-1 h-4 w-4' />{' '}
+                                          Delete
+                                          <span className='sr-only'>
+                                            , {user.name}
+                                          </span>
+                                        </button>
                                       )}
                                     </td>
                                   </tr>
@@ -204,6 +228,7 @@ function SettingTeamMemberPage({}: InferGetServerSidePropsType<
                       </div>
                     </div>
                   </div>
+                  {open && <Deactivate onClick={() => console.log('cliked')} />}
                 </section>
               </>
             </div>
