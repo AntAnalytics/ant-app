@@ -45,6 +45,7 @@ import {
   LineChart,
   Line,
   ReferenceLine,
+  Label,
 } from 'recharts';
 import { useEffect, useState } from 'react';
 
@@ -433,7 +434,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 Cooking temperature graph
               </h2>
               <div className='aspect-video h-full w-full text-xs'>
-                <ResponsiveContainer width='100%' height='100%'>
+                <ResponsiveContainer width='100%' height='90%'>
                   <LineChart width={300} height={100} data={temperatureData}>
                     <Tooltip />
 
@@ -443,9 +444,29 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                       stroke='#8884d8'
                       strokeWidth={2}
                     />
+
+                    <XAxis
+                      label={{
+                        value: 'Date',
+                        // angle: -90,
+                        position: 'insideBottom',
+                        offset: 0,
+                      }}
+                    />
+
+                    <YAxis
+                      label={{
+                        value: 'Temp (c)',
+                        angle: -90,
+                        position: 'insideLeft',
+                        offset: 20,
+                      }}
+                      domain={['dataMin+2', 'dataMax+2']}
+                    />
+
                     <ReferenceLine
                       y={74}
-                      // label='standard cooking temperature'
+                      label='standard cooking temp 74c'
                       stroke='#bc7fd7'
                     />
                   </LineChart>
@@ -457,18 +478,33 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 Internal auditing rating
               </h2>
               <div className='aspect-video h-full w-full text-xs'>
-                <ResponsiveContainer width='100%' height='100%'>
+                <ResponsiveContainer width='100%' height='90%'>
                   <LineChart
                     width={500}
-                    height={50}
+                    height={100}
                     data={internalAuditingRating}
                   >
                     <Tooltip />
-                    <XAxis type='category' dataKey='date' />
+                    <XAxis
+                      type='category'
+                      dataKey='date'
+                      label={{
+                        value: 'Date',
+                        // angle: -90,
+                        position: 'insideBottom',
+                        offset: 0,
+                      }}
+                    />
                     <YAxis
                       type='number'
                       dataKey='value'
                       domain={['dataMin-5', 100]}
+                      label={{
+                        value: 'Rating (%)',
+                        angle: -90,
+                        position: 'insideLeft',
+                        offset: 10,
+                      }}
                     />
 
                     <Line
@@ -501,20 +537,28 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
               </h2>
               <div className='text-xs'>
                 <ResponsiveContainer height={400}>
-                  <BarChart
-                    width={400}
-                    height={400}
-                    data={departmentRating}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
+                  <BarChart width={400} height={400} data={departmentRating}>
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='name' className='' />
-                    <YAxis dataKey='rating' />
+                    <XAxis
+                      dataKey='name'
+                      className=''
+                      label={{
+                        value: 'Department',
+                        // angle: -90,
+                        position: 'insideBottom',
+                        offset: 0,
+                      }}
+                    />
+                    <YAxis
+                      dataKey='rating'
+                      label={{
+                        value: 'Department rating (%)',
+                        angle: -90,
+                        position: 'insideLeft',
+                        offset: 0,
+                      }}
+                      domain={['dataMin-5', 'dataMax+2']}
+                    />
                     <Tooltip />
                     <Bar dataKey='rating' fill='#8884d8' />
                   </BarChart>
@@ -528,14 +572,14 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
               <div className='text-xs'>
                 <ResponsiveContainer height={400}>
                   <BarChart
-                    width={200}
+                    width={400}
                     layout='vertical'
                     height={400}
                     data={complaintsCategory}
                     margin={{
                       top: 5,
-                      right: 30,
-                      left: 20,
+                      right: 0,
+                      left: -20,
                       bottom: 5,
                     }}
                   >
@@ -544,8 +588,22 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                       dataKey='totalComplaints'
                       type='number'
                       className=''
-                    />
-                    <YAxis dataKey='name' type='category' />
+                      domain={['dataMin-2', 'dataMax+2']}
+                    >
+                      <Label
+                        value='#no of complaints'
+                        offset={0}
+                        position='insideBottom'
+                      />
+                    </XAxis>
+                    <YAxis dataKey='name' type='category'>
+                      <Label
+                        value='complaints categories'
+                        offset={30}
+                        position='insideLeft'
+                        angle={-90}
+                      />
+                    </YAxis>
                     <Tooltip />
                     <Bar
                       dataKey='totalComplaints'
