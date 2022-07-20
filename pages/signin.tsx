@@ -25,7 +25,7 @@ function SignInPage() {
     login(email, password)
       .then((res) => {
         res?.ok
-          ? router.push('/dashboard')
+          ? router.push('/smart-documentation')
           : toast.error('Credentials do not match!');
       })
       .finally(() => setLoading(false));
