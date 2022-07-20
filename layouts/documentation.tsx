@@ -445,7 +445,7 @@ const DocumentationLayout: FunctionComponent<DocumentationLayoutProps> = ({
                 {/* Profile dropdown */}
                 <Menu as='div' className='relative ml-3'>
                   <div>
-                    <Menu.Button className='flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
+                    <Menu.Button className='flex max-w-xs  items-center rounded-full bg-white text-sm ring-2 ring-black focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
                       <span className='sr-only'>Open user menu</span>
                       <Image
                         className='h-8 w-8 rounded-full'
