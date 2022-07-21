@@ -34,7 +34,7 @@ const navigation = [
     name: 'Purchase',
     href: '/smart-documentation/purchase',
     children: [
-      { name: 'Supplier specification', href: '/supplier-specification' },
+      // { name: 'Supplier specification', href: '/supplier-specification' },
       { name: 'Approved supplier', href: '/approved-supplier' },
       { name: 'Vendor audit (format)', href: '/vendor-audit' },
     ],
@@ -44,9 +44,9 @@ const navigation = [
     name: 'Receiving',
     href: '/smart-documentation/receiving',
     children: [
-      { name: 'Receiving checklist ', href: '/receiving-checklist' },
-      { name: 'Rejection report', href: '/rejection-report' },
-      { name: 'Calendar', href: '/calendar' },
+      // { name: 'Receiving checklist ', href: '/receiving-checklist' },
+      { name: 'Receiving report', href: '/rejection-report' },
+      // { name: 'Calendar', href: '/calendar' },
       {
         name: 'Vehicle Inspection Checklist',
         href: '/vehicle-inspection-checklist',
