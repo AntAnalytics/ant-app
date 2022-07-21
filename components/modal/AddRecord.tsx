@@ -2,7 +2,7 @@
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
+import { addApprovedSupplier } from 'services/ASServcie';
 
 export default function AddRecordModal({
   open,
@@ -11,8 +11,6 @@ export default function AddRecordModal({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -20,15 +18,14 @@ export default function AddRecordModal({
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log({ data });
-    const LsData = window.localStorage.getItem(router.asPath)!;
-    const LsJson = LsData ? JSON.parse(LsData) : [];
-    window.localStorage.setItem(
-      router.asPath,
-      JSON.stringify([...LsJson, data])
-    );
-    setOpen(false);
+    try {
+      const res = await addApprovedSupplier(data);
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -77,107 +74,129 @@ export default function AddRecordModal({
                         className='flex flex-col gap-y-4'
                       >
                         <div className='flex '>
-                          <label htmlFor='sName' className='w-28'>
-                            Supplier name
+                          <label htmlFor='supplierName' className='w-28'>
+                            Supplier Name
                           </label>
                           <input
-                            type='sName'
-                            id='sName'
+                            type='text'
+                            id='supplierName'
                             className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                            {...register('sName')}
+                            {...register('supplierName')}
+                            required
                           />
                         </div>
                         <div className='flex '>
                           <label htmlFor='category' className='w-28'>
-                            category
+                            Category
                           </label>
                           <input
-                            type='category'
+                            type='text'
                             id='category'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                             {...register('category')}
+                            required
                           />
                         </div>
                         <div className='flex '>
-                          <label htmlFor='Pname' className='w-28'>
-                            Pname
+                          <label htmlFor='productName' className='w-28'>
+                            Product Name
                           </label>
                           <input
-                            type='Pname'
-                            {...register('Pname')}
-                            id='Pname'
+                            type='text'
+                            id='productName'
                             className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('productName')}
+                            required
                           />
                         </div>
                         <div className='flex '>
                           <label htmlFor='gstNo' className='w-28'>
-                            gstNo
+                            gst Number
                           </label>
                           <input
-                            type='gstNo'
-                            {...register('gstNo')}
+                            type='text'
                             id='gstNo'
                             className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('gstNo')}
+                            required
                           />
                         </div>
 
                         <div className='flex '>
-                          <label htmlFor='Lno' className='w-28'>
-                            Lno
+                          <label htmlFor='fssaiLicenseNo' className='w-28'>
+                            Fssai License No
                           </label>
                           <input
-                            type='Lno'
-                            {...register('Lno')}
-                            id='Lno'
+                            type='text'
+                            id='fssaiLicenseNo'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('fssaiLicenseNo')}
+                            required
                           />
                         </div>
 
                         <div className='flex '>
-                          <label htmlFor='Location' className='w-28'>
+                          <label htmlFor='licenseValidUpto' className='w-28'>
+                            License Valid Upto
+                          </label>
+                          <input
+                            type='date'
+                            id='licenseValidUpto'
+                            className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('licenseValidUpto')}
+                            required
+                          />
+                        </div>
+
+                        <div className='flex '>
+                          <label htmlFor='location' className='w-28'>
                             Location
                           </label>
                           <input
-                            type='Location'
-                            {...register('Location')}
-                            id='Location'
+                            type='text'
+                            id='location'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('location')}
+                            required
                           />
                         </div>
 
                         <div className='flex '>
                           <label htmlFor='address' className='w-28'>
-                            address
+                            Address
                           </label>
                           <input
-                            type='address'
-                            {...register('address')}
+                            type='text'
                             id='address'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('address')}
+                            required
                           />
                         </div>
 
                         <div className='flex '>
-                          <label htmlFor='sLoc' className='w-28'>
-                            sLoc
+                          <label htmlFor='supplyingLocation' className='w-28'>
+                            Supplying Location
                           </label>
                           <input
-                            type='sLoc'
-                            {...register('sLoc')}
-                            id='sLoc'
+                            type='text'
+                            id='supplyingLocation'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('supplyingLocation')}
+                            required
                           />
                         </div>
 
                         <div className='flex '>
                           <label htmlFor='sku' className='w-28'>
-                            sku
+                            SKU
                           </label>
                           <input
-                            type='sku'
-                            {...register('sku')}
+                            type='text'
                             id='sku'
                             className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                            {...register('sku')}
+                            required
                           />
                         </div>
                         <div className='mt-5 sm:mt-6'>

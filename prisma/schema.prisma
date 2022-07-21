@@ -65,3 +65,19 @@ enum Role {
   MANAGER
   OWNER
 }
+
+model ApprovedSupplier {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  supplierName      String
+  category          String
+  productName       String
+  gstNo             String
+  fssaiLicenseNo    String
+  licenseValidUpto  String
+  location          String
+  address           String
+  supplyingLocation String
+  sku               String
+
+  @@unique([supplierName, gstNo, fssaiLicenseNo])
+}
