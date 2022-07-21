@@ -21,6 +21,7 @@ import { useState } from 'react';
 import AddRecordModal from 'components/modal/AddRecord';
 import { ApprovedSupplier } from '@prisma/client';
 import { getApprovedSuppliers } from 'services/ASServcie';
+import { isInThePastBy } from 'utils/isInThePastBy';
 
 const tabs = [
   {
@@ -150,10 +151,10 @@ function ApprovedSupplierPage({}: InferGetServerSidePropsType<
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    getApprovedSuppliers().then(({ data }) =>
-      setRecords(data.approvedSuppliers)
-    );
-  }, []);
+    getApprovedSuppliers()
+      .then(({ data }) => setRecords(data.approvedSuppliers))
+      .catch((error) => {});
+  }, [open]);
 
   return (
     <DocumentationLayout>
@@ -285,7 +286,14 @@ function ApprovedSupplierPage({}: InferGetServerSidePropsType<
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           {record.fssaiLicenseNo}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                        <td
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 text-sm ',
+                            isInThePastBy(record.licenseValidUpto, 7)
+                              ? 'text-red-500'
+                              : 'text-gray-500'
+                          )}
+                        >
                           {record.licenseValidUpto}
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
@@ -319,6 +327,7 @@ function ApprovedSupplierPage({}: InferGetServerSidePropsType<
           </div>
         </div>
       </section>
+
       <style jsx>{`
         td {
           min-width: 200px;

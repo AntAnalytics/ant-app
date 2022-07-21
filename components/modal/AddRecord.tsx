@@ -1,8 +1,8 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { addApprovedSupplier } from 'services/ASServcie';
+import { useSession } from 'next-auth/react';
 
 export default function AddRecordModal({
   open,
@@ -18,10 +18,15 @@ export default function AddRecordModal({
     formState: { errors },
   } = useForm();
 
+  const { data: session, status } = useSession();
+
   const onSubmit = async (data: any) => {
     console.log({ data });
     try {
-      const res = await addApprovedSupplier(data);
+      const res = await addApprovedSupplier({
+        ...data,
+        enteryById: session?.user.id,
+      });
       setOpen(false);
     } catch (error) {
       console.log(error);

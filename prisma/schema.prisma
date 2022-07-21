@@ -67,7 +67,7 @@ enum Role {
 }
 
 model ApprovedSupplier {
-  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
   supplierName      String
   category          String
   productName       String
@@ -78,6 +78,10 @@ model ApprovedSupplier {
   address           String
   supplyingLocation String
   sku               String
+  enteryById        String
+  approvedById      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@unique([supplierName, gstNo, fssaiLicenseNo])
 }

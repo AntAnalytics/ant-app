@@ -85,6 +85,7 @@ function validate(user: any) {
     address: Joi.string().required(),
     supplyingLocation: Joi.string().required(),
     sku: Joi.string().required(),
+    enteryById: Joi.string().required(),
   });
 
   return schema.validate(user);

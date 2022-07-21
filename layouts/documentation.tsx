@@ -301,7 +301,7 @@ const DocumentationLayout: FunctionComponent<DocumentationLayoutProps> = ({
             </div>
             <div className='flex flex-1 flex-col overflow-y-auto'>
               <nav className='flex-1 space-y-1 px-2 py-4'>
-                <Link href={'/dashboard'}>
+                <Link href={'/smart-documentation'}>
                   <a
                     className={classNames(
                       'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -315,7 +315,7 @@ const DocumentationLayout: FunctionComponent<DocumentationLayoutProps> = ({
                       )}
                       aria-hidden='true'
                     />
-                    Dashboard
+                    Home
                   </a>
                 </Link>
                 <h3

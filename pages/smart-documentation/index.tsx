@@ -48,6 +48,9 @@ import {
   Label,
 } from 'recharts';
 import { useEffect, useState } from 'react';
+import { getApprovedSuppliers } from 'services/ASServcie';
+import { ApprovedSupplier } from '@prisma/client';
+import { isInThePastBy } from 'utils/isInThePastBy';
 
 const data = [
   {
@@ -420,7 +423,19 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     null
   );
 
+  const [records, setRecords] = useState<ApprovedSupplier[]>([]);
+
   useEffect(() => {
+    getApprovedSuppliers()
+      .then(({ data }) =>
+        setRecords(
+          data.approvedSuppliers.filter((approvedSupplier: ApprovedSupplier) =>
+            isInThePastBy(approvedSupplier.licenseValidUpto, 7)
+          )
+        )
+      )
+      .catch((error) => {});
+
     const data = window.localStorage.getItem('companyDetails');
     if (data) setCompanyDetails(JSON.parse(data));
   }, []);
@@ -624,24 +639,29 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
             </h2>
             <div className='mt-6 flow-root'>
               <ul role='list' className='-my-5 divide-y divide-gray-200'>
-                {announcements.map((announcement) => (
-                  <li key={announcement.id} className='py-5'>
+                {records.map((approvedSupplier) => (
+                  <li key={approvedSupplier.id} className='border-b-2 pt-5'>
                     <div className='relative focus-within:ring-2 focus-within:ring-indigo-500'>
                       <h3 className='text-sm font-semibold text-gray-800'>
                         <a
                           href='#'
-                          className='hover:underline focus:outline-none'
+                          className='text-red-500 hover:underline focus:outline-none'
                         >
-                          {/* Extend touch target to entire panel */}
-                          <span
-                            className='absolute inset-0'
-                            aria-hidden='true'
-                          />
-                          {announcement.title}
+                          License expiring soon
                         </a>
                       </h3>
-                      <p className='line-clamp-2 mt-1 text-sm text-gray-600'>
-                        {announcement.preview}
+                      <p>
+                        <span className='absolute inset-0' aria-hidden='true' />
+                        supplier :{' '}
+                        <span className='capitalize'>
+                          {approvedSupplier.supplierName}
+                        </span>
+                        with : {approvedSupplier.fssaiLicenseNo}
+                        <span className='text-xs'> FSSAI License No </span>
+                        will expire on{' '}
+                        <span className='font-bold'>
+                          {approvedSupplier.licenseValidUpto}
+                        </span>
                       </p>
                     </div>
                   </li>
