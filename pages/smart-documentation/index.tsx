@@ -632,8 +632,8 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
             </div>
           </div>
         </div>
-        <div className='flex md:basis-1/4'>
-          <div className='rounded-lg bg-white p-4 shadow-sm'>
+        <div className='flex max-h-[100vh] md:basis-1/4'>
+          <div className='overflow-y-auto rounded-lg bg-white p-4 shadow-sm'>
             <h2 className=' text-lg font-medium leading-6 text-gray-900 sm:truncate'>
               Alert and Notifications
             </h2>
