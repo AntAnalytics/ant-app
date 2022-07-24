@@ -2,28 +2,34 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import DocumentationLayout from 'layouts/documentation';
 
 import { getSession, useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import DashboardBreadcrumbs from 'components/Breadcrumbs/dashboard';
 import { set, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import AddRecordModal from 'components/modal/AddRecord';
-import { ReceivingReport } from '@prisma/client';
+import { ReceivingReport, Role } from '@prisma/client';
 import { addReceivingReport, getReceivingReports } from 'services/ASServcie';
-import { isInThePastBy } from 'utils/isInThePastBy';
 import toast from 'react-hot-toast';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+type Record = ReceivingReport & {
+  entryBy: {
+    name: string;
+    role: Role;
+  };
+  verifiedBy?: {
+    name: string;
+    role: Role;
+  };
+};
+
 function ReceivingReportPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
-  const [records, setRecords] = useState<ReceivingReport[]>([]);
+  const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const { data: session, status } = useSession();
 
@@ -46,6 +52,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
       toast.error(error?.response.data.message);
     } finally {
       setLoading(false);
+      setShowForm(false);
     }
   };
 
@@ -55,6 +62,8 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
       .then(({ data }) => setRecords(data.receivingReports))
       .catch((error) => {});
   }, [loading]);
+
+  console.log({ records });
 
   return (
     <DocumentationLayout>
@@ -187,7 +196,15 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           {record.supplierName}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                        <td
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 text-sm ',
+                            parseInt(record.receivingTemp) < 60 ||
+                              parseInt(record.receivingTemp) > 100
+                              ? 'text-red-500'
+                              : 'text-gray-500'
+                          )}
+                        >
                           {record.receivingTemp}
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
@@ -214,7 +231,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                         </td>
 
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.entryById}
+                          {record.entryBy.name} ({record.entryBy.role})
                         </td>
                         {/* <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                           <a
@@ -236,125 +253,136 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
       </section>
 
       <section className='mt-8 text-xs font-semibold'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-8'
-        >
-          <div className='col-span-4 flex items-start'>
-            <label htmlFor='productName' className='w-28'>
-              Product Name
-            </label>
-            <input
-              type='text'
-              id='productName'
-              className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('productName')}
-              required
-            />
-          </div>
-          <div className='col-span-4 flex'>
-            <label htmlFor='supplierName' className='w-28'>
-              Supplier Name
-            </label>
-            <input
-              type='text'
-              id='supplierName'
-              className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('supplierName')}
-              required
-            />
-          </div>
-          <div className='col-span-2 flex '>
-            <label htmlFor='receivingTemp' className='w-28'>
-              Receiving Temp (c)
-            </label>
-            <input
-              type='number'
-              id='receivingTemp'
-              min={50}
-              max={100}
-              className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('receivingTemp')}
-              required
-            />
-          </div>
+        {showForm ? (
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className='grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-8'
+          >
+            <div className='col-span-4 flex items-start'>
+              <label htmlFor='productName' className='w-28'>
+                Product Name
+              </label>
+              <input
+                type='text'
+                id='productName'
+                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('productName')}
+                required
+              />
+            </div>
+            <div className='col-span-4 flex'>
+              <label htmlFor='supplierName' className='w-28'>
+                Supplier Name
+              </label>
+              <input
+                type='text'
+                id='supplierName'
+                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('supplierName')}
+                required
+              />
+            </div>
+            <div className='col-span-2 flex '>
+              <label htmlFor='receivingTemp' className='w-28'>
+                Receiving Temp (c)
+              </label>
+              <input
+                type='number'
+                id='receivingTemp'
+                className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('receivingTemp')}
+                required
+              />
+            </div>
 
-          <div className='col-span-2 flex'>
-            <label htmlFor='quantity' className='w-28'>
-              Quantity
-            </label>
-            <input
-              type='number'
-              id='quantity'
-              className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('quantity')}
-              required
-            />
-          </div>
+            <div className='col-span-2 flex'>
+              <label htmlFor='quantity' className='w-28'>
+                Quantity
+              </label>
+              <input
+                type='number'
+                id='quantity'
+                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('quantity')}
+                required
+              />
+            </div>
 
-          <div className='col-span-2 flex'>
-            <label htmlFor='useByDate' className='w-28'>
-              UseBy Date
-            </label>
-            <input
-              type='date'
-              id='useByDate'
-              className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('useByDate')}
-              required
-            />
-          </div>
+            <div className='col-span-2 flex'>
+              <label htmlFor='useByDate' className='w-28'>
+                UseBy Date
+              </label>
+              <input
+                type='date'
+                id='useByDate'
+                className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('useByDate')}
+                required
+              />
+            </div>
 
-          <div className='col-span-2 flex'>
-            <label htmlFor='sanitization' className='w-28'>
-              Sanitization (ppm)
-            </label>
-            <input
-              type='number'
-              min={50}
-              max={100}
-              id='sanitization'
-              className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('sanitization')}
-              required
-            />
-          </div>
+            <div className='col-span-2 flex'>
+              <label htmlFor='sanitization' className='w-28'>
+                Sanitization (ppm)
+              </label>
+              <input
+                type='number'
+                id='sanitization'
+                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('sanitization')}
+                required
+              />
+            </div>
 
-          <div className='col-span-4 flex'>
-            <label htmlFor='batchNo' className='w-28'>
-              Batch No
-            </label>
-            <input
-              type='text'
-              id='batchNo'
-              className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('batchNo')}
-              required
-            />
-          </div>
+            <div className='col-span-4 flex'>
+              <label htmlFor='batchNo' className='w-28'>
+                Batch No
+              </label>
+              <input
+                type='text'
+                id='batchNo'
+                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('batchNo')}
+                required
+              />
+            </div>
 
-          <div className='col-span-4 flex'>
-            <label htmlFor='code' className='w-28'>
-              code
-            </label>
-            <input
-              type='text'
-              id='code'
-              className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-              {...register('code')}
-              required
-            />
-          </div>
+            <div className='col-span-4 flex'>
+              <label htmlFor='code' className='w-28'>
+                code
+              </label>
+              <input
+                type='text'
+                id='code'
+                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                {...register('code')}
+                required
+              />
+            </div>
 
-          <div className='col-span-2 col-end-9 mt-5 sm:mt-6'>
-            <button
-              type='submit'
-              className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
-            >
-              Add
-            </button>
-          </div>
-        </form>
+            <div className='col-span-2 col-end-9 mt-5 flex flex-row gap-4 sm:mt-6'>
+              <button
+                onClick={() => setShowForm(false)}
+                className='inline-flex w-full justify-center rounded-md border border-transparent  px-4 py-2 text-base font-medium text-red-500 shadow-sm hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2  sm:text-sm'
+              >
+                Cancel
+              </button>
+              <button
+                type='submit'
+                className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        ) : (
+          <button
+            onClick={() => setShowForm(true)}
+            className='ml-auto flex rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+          >
+            Add Record
+          </button>
+        )}
       </section>
 
       <style jsx>{`
