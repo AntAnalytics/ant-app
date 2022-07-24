@@ -12,7 +12,7 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const approvedSuppliers = await prisma?.approvedSupplier.findMany({
+        const receivingReports = await prisma?.receivingReport.findMany({
           include: {
             entryBy: {
               select: {
@@ -20,7 +20,7 @@ export default async function handler(
                 role: true,
               },
             },
-            approvedBy: {
+            verifiedBy: {
               select: {
                 name: true,
                 role: true,
@@ -28,7 +28,7 @@ export default async function handler(
             },
           },
         });
-        return res.status(200).json({ success: true, approvedSuppliers });
+        return res.status(200).json({ success: true, receivingReports });
       } catch (error) {
         res
           .status(500)
@@ -52,25 +52,19 @@ export default async function handler(
             success: false,
             message: error.details[0].message,
           });
-
-        const supplier = await prisma.approvedSupplier.findFirst({
+        const receivingReport = await prisma.receivingReport.findFirst({
           where: {
-            gstNo: req.body.gstNo,
-            fssaiLicenseNo: req.body.fssaiLicenseNo,
-            supplierName: req.body.supplierName,
-            productName: req.body.productName,
+            batchNo: req.body.batchNo,
           },
         });
-
-        if (supplier)
+        if (receivingReport)
           return res
             .status(400)
-            .json({ success: false, message: 'Supplier already exist.' });
-
-        const newApprovedSupplier = await prisma.approvedSupplier.create({
+            .json({ success: false, message: 'Report already exist.' });
+        const newReceivingReport = await prisma.receivingReport.create({
           data: req.body,
         });
-        res.status(201).json({ success: true, newApprovedSupplier });
+        res.status(201).json({ success: true, newReceivingReport });
       } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -90,17 +84,17 @@ export default async function handler(
 
 function validate(user: any) {
   const schema = Joi.object({
-    supplierName: Joi.string().required(),
-    category: Joi.string().required(),
+    batchNo: Joi.string().required(),
+    code: Joi.string().required(),
     productName: Joi.string().required(),
-    gstNo: Joi.string().required(),
-    fssaiLicenseNo: Joi.string().required(),
-    licenseValidUpto: Joi.string().required(),
-    location: Joi.string().required(),
-    address: Joi.string().required(),
-    supplyingLocation: Joi.string().required(),
-    sku: Joi.string().required(),
+    quantity: Joi.number().required(),
+    receivingTemp: Joi.number().required(), //min and max value?
+    remark: Joi.string(),
+    sanitization: Joi.number().required(), //value type?
+    supplierName: Joi.string().required(),
+    useByDate: Joi.string().required(),
     entryById: Joi.string().required(),
+    verifiedById: Joi.string(),
   });
 
   return schema.validate(user);

@@ -25,7 +25,7 @@ export default function AddRecordModal({
     try {
       const res = await addApprovedSupplier({
         ...data,
-        enteryById: session?.user.id,
+        entryById: session?.user.id,
       });
       setOpen(false);
     } catch (error) {

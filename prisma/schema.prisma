@@ -35,22 +35,28 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  accounts      Account[]
-  company       String    @default("JW")
-  department    String
-  designation   String
-  email         String    @unique
-  emailVerified DateTime?
-  employeeId    String
-  image         String?
-  name          String
-  password      String
-  mobile        String
-  role          Role      @default(value: USER)
-  sessions      Session[]
-  site          Site?     @relation(fields: [siteId], references: [id])
-  siteId        String?   @db.ObjectId
+  id                        String             @id @default(auto()) @map("_id") @db.ObjectId
+  accounts                  Account[]
+  company                   String             @default("JW")
+  department                String
+  designation               String
+  email                     String             @unique
+  emailVerified             DateTime?
+  employeeId                String
+  image                     String?
+  mobile                    String
+  name                      String
+  password                  String
+  role                      Role               @default(value: USER)
+  sessions                  Session[]
+  site                      Site?              @relation(fields: [siteId], references: [id])
+  siteId                    String?            @db.ObjectId
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+  Supplier_approved         ApprovedSupplier[] @relation("Supplier_approved")
+  Supplier_entries          ApprovedSupplier[] @relation("Supplier_entries")
+  Receiving_reports_verify  ReceivingReport[]  @relation("Receiving_reports_verify")
+  Receiving_reports_entries ReceivingReport[]  @relation("Receiving_reports_entries")
 }
 
 model Site {
@@ -68,20 +74,43 @@ enum Role {
 
 model ApprovedSupplier {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  supplierName      String
+  address           String
+  approvedBy        User?    @relation("Supplier_approved", fields: [approvedById], references: [id])
+  approvedById      String?  @db.ObjectId
   category          String
-  productName       String
-  gstNo             String
+  entryBy           User     @relation("Supplier_entries", fields: [entryById], references: [id])
+  entryById         String   @db.ObjectId
   fssaiLicenseNo    String
+  gstNo             String
   licenseValidUpto  String
   location          String
-  address           String
-  supplyingLocation String
+  productName       String
   sku               String
-  enteryById        String
-  approvedById      String?
+  supplierName      String
+  supplyingLocation String
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
+
+
   @@unique([supplierName, gstNo, fssaiLicenseNo])
+}
+
+model ReceivingReport {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  batchNo       String   @unique
+  code          String
+  productName   String
+  quantity      String
+  receivingTemp String
+  remark        String?
+  sanitization  String
+  supplierName  String
+  useByDate     String
+  entryBy       User     @relation("Receiving_reports_entries", fields: [entryById], references: [id])
+  entryById     String   @db.ObjectId
+  verifiedById  String?  @db.ObjectId
+  verifiedBy    User?    @relation("Receiving_reports_verify", fields: [verifiedById], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

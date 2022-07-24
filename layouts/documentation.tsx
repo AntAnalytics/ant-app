@@ -45,7 +45,7 @@ const navigation = [
     href: '/smart-documentation/receiving',
     children: [
       // { name: 'Receiving checklist ', href: '/receiving-checklist' },
-      { name: 'Receiving report', href: '/rejection-report' },
+      { name: 'Receiving report', href: '/receiving-report' },
       // { name: 'Calendar', href: '/calendar' },
       {
         name: 'Vehicle Inspection Checklist',

@@ -25,6 +25,7 @@ export default async function handler(
             designation: true,
             role: true,
             mobile: true,
+            Supplier_entries: true,
           },
         });
         return res.status(200).json({ success: true, users });
