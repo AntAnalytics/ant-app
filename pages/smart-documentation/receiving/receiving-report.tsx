@@ -3,7 +3,7 @@ import DocumentationLayout from 'layouts/documentation';
 
 import { getSession, useSession } from 'next-auth/react';
 import { set, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useState } from 'react';
 import { ReceivingReport, Role } from '@prisma/client';
 import { addReceivingReport, getReceivingReports } from 'services/ASServcie';
@@ -28,8 +28,9 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const [records, setRecords] = useState<Record[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [filterDate, setFilterDate] = useState('');
 
   const { data: session, status } = useSession();
 
@@ -42,7 +43,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
 
   const onSubmit = async (data: any) => {
     console.log({ data });
-    setLoading(true);
+    setSubmitting(true);
     try {
       const res = await addReceivingReport({
         ...data,
@@ -51,19 +52,33 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
     } catch (error: any) {
       toast.error(error?.response.data.message);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
       setShowForm(false);
     }
   };
 
   useEffect(() => {
-    if (loading) return;
+    if (submitting) return;
     getReceivingReports()
       .then(({ data }) => setRecords(data.receivingReports))
       .catch((error) => {});
-  }, [loading]);
+  }, [submitting]);
 
-  console.log({ records });
+  const filteredRecords = useMemo(
+    () =>
+      records?.filter((record) => {
+        if (filterDate) {
+          return (
+            record.createdAt
+              .toLocaleString(undefined, {
+                timeZone: 'Asia/Kolkata',
+              })
+              .slice(0, 10) === filterDate
+          );
+        } else return true;
+      }),
+    [filterDate, records]
+  );
 
   return (
     <DocumentationLayout>
@@ -78,6 +93,17 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
               A list of all the users in your account including their name,
               title, email and role.
             </p> */}
+            <div className='flex items-center justify-end gap-2'>
+              <label htmlFor='filterDate'>Filter by Date</label>
+              <input
+                type='date'
+                name='filterDate'
+                id='filterDate'
+                value={filterDate}
+                onChange={(e) => setFilterDate(e.target.value)}
+                className='h-10 w-10 items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -170,7 +196,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-gray-200 bg-white'>
-                    {records.map((record, index) => (
+                    {filteredRecords.map((record, index) => (
                       <tr key={record.supplierName + index}>
                         <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
                           {index + 1}
@@ -247,6 +273,11 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                   </tbody>
                 </table>
               </div>
+              {filterDate && filteredRecords.length === 0 && (
+                <div className='grid h-40 w-full place-content-center'>
+                  No Record Found
+                </div>
+              )}
             </div>
           </div>
         </div>
