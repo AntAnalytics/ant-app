@@ -5,15 +5,28 @@ import { getSession, useSession } from 'next-auth/react';
 import { set, useForm } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { useState } from 'react';
-import { ReceivingReport, Role } from '@prisma/client';
-import { addReceivingReport, getReceivingReports } from 'services/ASServcie';
+import {
+  ApprovedSupplier,
+  ReceivingReport,
+  Role,
+  VehicleInspectionCheckList,
+} from '@prisma/client';
+import {
+  addVehicleInspectionsList,
+  getApprovedSuppliers,
+  getVehicleInspectionsList,
+} from 'services/ASServcie';
 import toast from 'react-hot-toast';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-type Record = ReceivingReport & {
+type Record = VehicleInspectionCheckList & {
+  supplier: {
+    id: string;
+    supplierName: string;
+  };
   entryBy: {
     name: string;
     role: Role;
@@ -28,6 +41,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   const [records, setRecords] = useState<Record[]>([]);
+  const [suppliers, setSuppliers] = useState<ApprovedSupplier[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [filterDate, setFilterDate] = useState('');
@@ -45,9 +59,12 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
     console.log({ data });
     setSubmitting(true);
     try {
-      const res = await addReceivingReport({
-        ...data,
-        entryById: session?.user.id,
+      const res = await addVehicleInspectionsList({
+        containersClean: !!+data.containersClean,
+        vehicleInteriorClean: !!+data.vehicleInteriorClean,
+        crossContamination: !!+data.crossContamination,
+        entryById: session?.user.id as string,
+        supplierId: data.supplierId,
       });
     } catch (error: any) {
       toast.error(error?.response.data.message);
@@ -58,9 +75,15 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
   };
 
   useEffect(() => {
+    getApprovedSuppliers()
+      .then(({ data }) => setSuppliers(data.approvedSuppliers))
+      .catch((error) => {});
+  }, []);
+
+  useEffect(() => {
     if (submitting) return;
-    getReceivingReports()
-      .then(({ data }) => setRecords(data.receivingReports))
+    getVehicleInspectionsList()
+      .then(({ data }) => setRecords(data.vehicleInspectionsList))
       .catch((error) => {});
   }, [submitting]);
 
@@ -80,8 +103,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
     [filterDate, records]
   );
 
-  console.log({ filterDate });
-
+  console.log({ filteredRecords, suppliers });
   return (
     <DocumentationLayout>
       <section>
@@ -133,55 +155,31 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                         scope='col'
                         className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        Time
+                        Name of the Supplier
                       </th>
                       <th
                         scope='col'
                         className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        Products name
+                        Vehicle interior clean
                       </th>
                       <th
                         scope='col'
                         className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        Supplier name
+                        Container clean
                       </th>
                       <th
                         scope='col'
                         className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        Receiving Temp (c)
+                        Cross contamination
                       </th>
                       <th
                         scope='col'
                         className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        Quantity
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                      >
-                        Use by date
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                      >
-                        Batch No.
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                      >
-                        Sanitization
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
-                      >
-                        Code
+                        Remark
                       </th>
                       <th
                         scope='col'
@@ -199,7 +197,7 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                   </thead>
                   <tbody className='divide-y divide-gray-200 bg-white'>
                     {filteredRecords?.map((record, index) => (
-                      <tr key={record.supplierName + index}>
+                      <tr key={record.id + index}>
                         <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
                           {index + 1}
                         </td>
@@ -210,54 +208,44 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
                             })
                             .slice(0, 10)}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {new Date(record.createdAt)
-                            .toLocaleString(undefined, {
-                              timeZone: 'Asia/Kolkata',
-                            })
-                            .slice(11)}
-                        </td>
 
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.productName}
-                        </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.supplierName}
+                          {record.supplier.supplierName}
                         </td>
                         <td
                           className={classNames(
                             'whitespace-nowrap px-3 py-4 text-sm ',
-                            parseInt(record.receivingTemp) < -18 ||
-                              parseInt(record.receivingTemp) > 5
-                              ? 'text-red-500'
-                              : 'text-gray-500'
+                            record.vehicleInteriorClean
+                              ? 'text-gray-500'
+                              : 'text-red-500'
                           )}
                         >
-                          {record.receivingTemp}
-                        </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.quantity}
+                          {record.vehicleInteriorClean ? 'Yes' : 'No'}
                         </td>
                         <td
                           className={classNames(
                             'whitespace-nowrap px-3 py-4 text-sm ',
-                            // isInThePastBy(record.quantity, 7)
-                            //   ? 'text-red-500'
-                            'text-gray-500'
+                            record.containersClean
+                              ? 'text-gray-500'
+                              : 'text-red-500'
                           )}
                         >
-                          {record.useByDate}
+                          {record.containersClean ? 'Yes' : 'No'}
                         </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.batchNo}
-                        </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.sanitization}
-                        </td>
-                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {record.code}
+                        <td
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 text-sm ',
+                            record.crossContamination
+                              ? 'text-gray-500'
+                              : 'text-red-500'
+                          )}
+                        >
+                          {record.crossContamination ? 'Yes' : 'No'}
                         </td>
 
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {record.remark || '--'}
+                        </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           {record.entryBy.name} ({record.entryBy.role})
                         </td>
@@ -291,106 +279,141 @@ function ReceivingReportPage({}: InferGetServerSidePropsType<
             onSubmit={handleSubmit(onSubmit)}
             className='grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-8'
           >
-            <div className='col-span-4 flex items-start'>
-              <label htmlFor='productName' className='w-28'>
-                Product Name
+            <div className='col-span-8 flex items-start'>
+              <label
+                htmlFor='supplierId'
+                className='block min-w-[15rem] text-sm font-medium text-gray-700'
+              >
+                Name of the supplier
               </label>
-              <input
-                type='text'
-                id='productName'
-                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('productName')}
-                required
-              />
-            </div>
-            <div className='col-span-4 flex'>
-              <label htmlFor='supplierName' className='w-28'>
-                Supplier Name
-              </label>
-              <input
-                type='text'
-                id='supplierName'
-                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('supplierName')}
-                required
-              />
-            </div>
-            <div className='col-span-2 flex '>
-              <label htmlFor='receivingTemp' className='w-28'>
-                Receiving Temp (c)
-              </label>
-              <input
-                type='number'
-                id='receivingTemp'
-                className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('receivingTemp')}
-                required
-              />
+              <select
+                id='supplierId'
+                className='mt-1 ml-6 block w-full rounded-md border-gray-300 py-2 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
+                {...register('supplierId')}
+              >
+                {suppliers?.map((supplier) => (
+                  <option key={supplier.id} value={supplier.id}>
+                    {supplier.supplierName}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className='col-span-2 flex'>
-              <label htmlFor='quantity' className='w-28'>
-                Quantity
+            <div className='col-span-8 flex items-start'>
+              <label className='block min-w-[15rem] text-sm font-medium text-gray-700'>
+                Vehicle Interior Clean
               </label>
-              <input
-                type='number'
-                id='quantity'
-                className=' flex h-10 w-full  items-end rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('quantity')}
-                required
-              />
+
+              <fieldset className='ml-6 flex gap-6'>
+                <div className='flex items-center'>
+                  <input
+                    id='vehicleInteriorCleanYes'
+                    type='radio'
+                    value={1}
+                    {...register('vehicleInteriorClean')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='vehicleInteriorCleanYes'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    Yes
+                  </label>
+                </div>
+                <div className='flex items-center'>
+                  <input
+                    id='vehicleInteriorCleanNo'
+                    type='radio'
+                    value={0}
+                    {...register('vehicleInteriorClean')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='vehicleInteriorCleanNo'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    No
+                  </label>
+                </div>
+              </fieldset>
             </div>
 
-            <div className='col-span-2 flex'>
-              <label htmlFor='useByDate' className='w-28'>
-                UseBy Date
+            <div className='col-span-8 flex items-start'>
+              <label className='block min-w-[15rem] text-sm font-medium text-gray-700'>
+                Containers Clean
               </label>
-              <input
-                type='date'
-                id='useByDate'
-                className='ml-6 flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('useByDate')}
-                required
-              />
+
+              <fieldset className='ml-6 flex gap-6'>
+                <div className='flex items-center'>
+                  <input
+                    id='containersCleanYes'
+                    type='radio'
+                    value={1}
+                    {...register('containersClean')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='containersCleanYes'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    Yes
+                  </label>
+                </div>
+                <div className='flex items-center'>
+                  <input
+                    id='containersCleanNo'
+                    type='radio'
+                    value={0}
+                    {...register('containersClean')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='containersCleanNo'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    No
+                  </label>
+                </div>
+              </fieldset>
             </div>
 
-            <div className='col-span-2 flex'>
-              <label htmlFor='sanitization' className='w-28'>
-                Sanitization (ppm)
+            <div className='col-span-8 flex items-start'>
+              <label className='block min-w-[15rem] text-sm font-medium text-gray-700'>
+                Cross Contamination
               </label>
-              <input
-                type='number'
-                id='sanitization'
-                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('sanitization')}
-                required
-              />
-            </div>
 
-            <div className='col-span-4 flex'>
-              <label htmlFor='batchNo' className='w-28'>
-                Batch No
-              </label>
-              <input
-                type='text'
-                id='batchNo'
-                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('batchNo')}
-                required
-              />
-            </div>
-
-            <div className='col-span-4 flex'>
-              <label htmlFor='code' className='w-28'>
-                code
-              </label>
-              <input
-                type='text'
-                id='code'
-                className=' flex h-10 w-full items-end  rounded-md border-gray-300 shadow-sm ring-1 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                {...register('code')}
-                required
-              />
+              <fieldset className='ml-6 flex gap-6'>
+                <div className='flex items-center'>
+                  <input
+                    id='crossContaminationYes'
+                    type='radio'
+                    value={1}
+                    {...register('crossContamination')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='crossContaminationYes'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    Yes
+                  </label>
+                </div>
+                <div className='flex items-center'>
+                  <input
+                    id='crossContaminationNo'
+                    type='radio'
+                    value={0}
+                    {...register('crossContamination')}
+                    className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                  />
+                  <label
+                    htmlFor='crossContaminationNo'
+                    className='ml-3 block text-sm font-medium text-gray-700'
+                  >
+                    No
+                  </label>
+                </div>
+              </fieldset>
             </div>
 
             <div className='col-span-2 col-end-9 mt-5 flex flex-row gap-4 sm:mt-6'>

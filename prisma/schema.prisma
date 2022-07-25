@@ -35,28 +35,30 @@ model Session {
 }
 
 model User {
-  id                        String             @id @default(auto()) @map("_id") @db.ObjectId
-  accounts                  Account[]
-  company                   String             @default("JW")
-  department                String
-  designation               String
-  email                     String             @unique
-  emailVerified             DateTime?
-  employeeId                String
-  image                     String?
-  mobile                    String
-  name                      String
-  password                  String
-  role                      Role               @default(value: USER)
-  sessions                  Session[]
-  site                      Site?              @relation(fields: [siteId], references: [id])
-  siteId                    String?            @db.ObjectId
-  createdAt                 DateTime           @default(now())
-  updatedAt                 DateTime           @updatedAt
-  Supplier_approved         ApprovedSupplier[] @relation("Supplier_approved")
-  Supplier_entries          ApprovedSupplier[] @relation("Supplier_entries")
-  Receiving_reports_verify  ReceivingReport[]  @relation("Receiving_reports_verify")
-  Receiving_reports_entries ReceivingReport[]  @relation("Receiving_reports_entries")
+  id                         String                       @id @default(auto()) @map("_id") @db.ObjectId
+  accounts                   Account[]
+  company                    String                       @default("JW")
+  department                 String
+  designation                String
+  email                      String                       @unique
+  emailVerified              DateTime?
+  employeeId                 String
+  image                      String?
+  mobile                     String
+  name                       String
+  password                   String
+  role                       Role                         @default(value: USER)
+  sessions                   Session[]
+  site                       Site?                        @relation(fields: [siteId], references: [id])
+  siteId                     String?                      @db.ObjectId
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @updatedAt
+  Supplier_approved          ApprovedSupplier[]           @relation("Supplier_approved")
+  Supplier_entries           ApprovedSupplier[]           @relation("Supplier_entries")
+  Receiving_reports_verify   ReceivingReport[]            @relation("Receiving_reports_verify")
+  Receiving_reports_entries  ReceivingReport[]            @relation("Receiving_reports_entries")
+  Vehicle_Inspection_entries VehicleInspectionCheckList[] @relation("Vehicle_Inspection_entries")
+  Vehicle_Inspection_verify  VehicleInspectionCheckList[] @relation("Vehicle_Inspection_verify")
 }
 
 model Site {
@@ -73,13 +75,13 @@ enum Role {
 }
 
 model ApprovedSupplier {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                String                       @id @default(auto()) @map("_id") @db.ObjectId
   address           String
-  approvedBy        User?    @relation("Supplier_approved", fields: [approvedById], references: [id])
-  approvedById      String?  @db.ObjectId
+  approvedBy        User?                        @relation("Supplier_approved", fields: [approvedById], references: [id])
+  approvedById      String?                      @db.ObjectId
   category          String
-  entryBy           User     @relation("Supplier_entries", fields: [entryById], references: [id])
-  entryById         String   @db.ObjectId
+  entryBy           User                         @relation("Supplier_entries", fields: [entryById], references: [id])
+  entryById         String                       @db.ObjectId
   fssaiLicenseNo    String
   gstNo             String
   licenseValidUpto  String
@@ -88,10 +90,9 @@ model ApprovedSupplier {
   sku               String
   supplierName      String
   supplyingLocation String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-
+  createdAt         DateTime                     @default(now())
+  updatedAt         DateTime                     @updatedAt
+  VehicleInspection VehicleInspectionCheckList[]
 
   @@unique([supplierName, gstNo, fssaiLicenseNo])
 }
@@ -113,4 +114,21 @@ model ReceivingReport {
   verifiedBy    User?    @relation("Receiving_reports_verify", fields: [verifiedById], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model VehicleInspectionCheckList {
+  id                   String           @id @default(auto()) @map("_id") @db.ObjectId
+  entryBy              User             @relation("Vehicle_Inspection_entries", fields: [entryById], references: [id])
+  entryById            String           @db.ObjectId
+  remark               String?
+  supplier             ApprovedSupplier @relation(fields: [supplierId], references: [id])
+  supplierId           String           @db.ObjectId
+  vehicleInteriorClean Boolean
+  containersClean      Boolean
+  crossContamination   Boolean
+  verifiedBy           User?            @relation("Vehicle_Inspection_verify", fields: [verifiedById], references: [id])
+  verifiedById         String?          @db.ObjectId
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+
 }
