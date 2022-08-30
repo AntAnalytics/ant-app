@@ -67,7 +67,7 @@ export default function ModernHeader({
                 {/* Profile dropdown */}
                 <Menu as='div' className='relative ml-3'>
                   <div>
-                    <Menu.Button className='flex items-center rounded-full  text-sm '>
+                    <Menu.Button className='flex items-center rounded-full  bg-white/50 p-1 pr-2 text-sm focus:ring-2'>
                       <span className='sr-only'>Open user menu</span>
                       <Image
                         className='h-8 w-8 rounded-full'
