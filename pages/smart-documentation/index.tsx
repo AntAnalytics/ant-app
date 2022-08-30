@@ -443,14 +443,14 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     <ModernLayout>
       <section className='flex w-full flex-col gap-4 md:flex-row'>
         <div className='flex py-6 md:basis-3/4'>
-          <div className='grid w-full grid-cols-3 gap-4'>
-            <div className='rounded-lg  p-4 shadow-sm'>
+          <div className='w-full gap-4 md:grid md:grid-cols-3'>
+            <div className='  p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
               </h2>
               <div className='aspect-video h-full w-full text-xs'>
                 <ResponsiveContainer width='100%' height='90%'>
-                  <LineChart width={300} height={100} data={temperatureData}>
+                  <LineChart width={200} height={100} data={temperatureData}>
                     <Tooltip />
 
                     <Line
@@ -488,7 +488,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='rounded-lg  p-4 shadow-sm'>
+            <div className='  p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Internal auditing rating
               </h2>
@@ -532,21 +532,21 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='flex flex-col gap-4'>
-              <div className='rounded-lg  p-4 shadow-sm'>
+            <div className='flex gap-4 md:flex-col'>
+              <div className='  p-4'>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   supplier compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>91%</p>
               </div>
-              <div className='rounded-lg  p-4 shadow-sm'>
+              <div className='  p-4'>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   regular compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>89%</p>
               </div>
             </div>
-            <div className='col-span-2 rounded-lg  p-4 shadow-sm'>
+            <div className='col-span-2   p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Department compliance rating
               </h2>
@@ -580,7 +580,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='rounded-lg  p-4 shadow-sm'>
+            <div className='  p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 complaints
               </h2>
@@ -633,7 +633,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
           </div>
         </div>
         <div className='flex max-h-[100vh] md:basis-1/4'>
-          <div className='overflow-y-auto rounded-lg bg-white p-4 shadow-sm'>
+          <div className='overflow-y-auto  bg-white p-4'>
             <h2 className=' text-lg font-medium leading-6 text-gray-900 sm:truncate'>
               Alert and Notifications
             </h2>
@@ -736,13 +736,13 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                           {/* <div className='mt-6 flex space-x-3 md:mt-0 md:ml-4'>
                           <button
                             type='button'
-                            className='inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
+                            className='inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
                           >
                             Add money
                           </button>
                           <button
                             type='button'
-                            className='inline-flex items-center rounded-md border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
+                            className='inline-flex items-center rounded-md border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
                           >
                             Send money
                           </button>
@@ -823,7 +823,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                           {/* {cards.map((card) => (
                           <div
                             key={card.name}
-                            className='overflow-hidden rounded-lg  shadow'
+                            className='overflow-hidden   shadow'
                           >
                             <div className='p-5'>
                               <div className='flex items-center'>
@@ -934,7 +934,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                       <div className='hidden sm:block'>
                         <div className='mx-auto max-w-6xl px-4 sm:px-6 lg:px-8'>
                           <div className='mt-2 flex flex-col'>
-                            <div className='min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg'>
+                            <div className='sm: min-w-full overflow-hidden overflow-x-auto align-middle shadow'>
                               <table className='min-w-full divide-y divide-gray-200'>
                                 <thead>
                                   <tr>
