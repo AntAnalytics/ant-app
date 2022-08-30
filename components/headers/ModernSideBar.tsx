@@ -183,17 +183,17 @@ export default function ModernSideBar({
           sidebarOpen ? 'w-64' : 'w-0 md:w-12'
         )}
       >
-        <div className='flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white'>
+        <div className='flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-gray-800'>
           <div className='flex flex-1 flex-col overflow-y-auto pb-4'>
-            <nav className='mt-16  flex-1  space-y-1 bg-white px-2  pt-4'>
+            <nav className='mt-16  flex-1  space-y-1  px-2  pt-4'>
               {navigation.map((item) =>
                 !item.children ? (
                   <Link key={item.name} href={item.href}>
                     <a
                       className={classNames(
                         router.asPath.includes(item.href)
-                          ? 'bg-gray-100 text-gray-900'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                          ? 'bg-gray-900 text-gray-100'
+                          : 'text-gray-50 hover:bg-gray-600 hover:text-gray-100',
                         'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
                       )}
                       title={item.name}
@@ -202,7 +202,7 @@ export default function ModernSideBar({
                         className={classNames(
                           router.asPath.includes(item.href)
                             ? 'text-gray-500'
-                            : 'text-gray-400 group-hover:text-gray-500',
+                            : 'text-gray-200 group-hover:text-gray-300',
                           'mr-3 h-6 w-6 flex-shrink-0'
                         )}
                         aria-hidden='true'
@@ -217,24 +217,24 @@ export default function ModernSideBar({
                         <Disclosure.Button
                           className={classNames(
                             router.asPath.includes(item.href)
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                              ? 'bg-gray-900 text-gray-100'
+                              : 'text-gray-50 hover:bg-gray-600 hover:text-gray-100',
                             'group flex w-full items-center rounded-md py-2 pl-2 pr-1 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500'
                           )}
                           onClick={() => setSidebarOpen(true)}
                           title={item.name}
                         >
                           <item.icon
-                            className='mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                            className='mr-3 h-6 w-6 flex-shrink-0 text-gray-200 group-hover:text-gray-300'
                             aria-hidden='true'
                           />
                           <span className='flex-1'>{item.name}</span>
                           <svg
                             className={classNames(
                               open
-                                ? 'rotate-90 text-gray-400'
+                                ? 'rotate-90 text-gray-200'
                                 : 'text-gray-300',
-                              'ml-3 h-5 w-5 flex-shrink-0 transform transition-colors duration-150 ease-in-out group-hover:text-gray-400'
+                              'ml-3 h-5 w-5 flex-shrink-0 transform transition-colors duration-150 ease-in-out group-hover:text-gray-200'
                             )}
                             viewBox='0 0 20 20'
                             aria-hidden='true'
@@ -250,7 +250,7 @@ export default function ModernSideBar({
                                 href={item.href + subItem.href}
                               >
                                 <a>
-                                  <Disclosure.Button className='group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900'>
+                                  <Disclosure.Button className='group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-50 hover:bg-gray-600 hover:text-gray-100'>
                                     {subItem.name}
                                   </Disclosure.Button>
                                 </a>
