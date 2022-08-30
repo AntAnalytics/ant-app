@@ -23,7 +23,7 @@ export default function ModernHeader() {
   const { data: session, status } = useSession();
 
   return (
-    <Disclosure as='nav' className='bg-white shadow'>
+    <Disclosure as='nav' className='bg-primary shadow'>
       {({ open }) => (
         <>
           <div className='mx-auto px-2 sm:px-6 lg:px-8'>
