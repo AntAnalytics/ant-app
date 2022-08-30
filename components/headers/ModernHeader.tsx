@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -20,7 +21,7 @@ const userNavigation = [
 ];
 
 export default function ModernHeader() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <Disclosure as='nav' className='bg-primary shadow'>
@@ -30,13 +31,18 @@ export default function ModernHeader() {
             <div className='relative flex h-16 justify-between'>
               <div className='flex '>
                 <div className='flex flex-shrink-0 items-center'>
-                  <Image
-                    className='block h-8 w-auto'
-                    src='/TAA-Logo.png'
-                    alt='TAA logo'
-                    height={32}
-                    width={32}
-                  />
+                  <Link href='/'>
+                    <a className='flex items-center rounded-md bg-slate-300 p-1 font-bold'>
+                      <Image
+                        className='block h-8 w-auto'
+                        src='/TAA-Logo.png'
+                        alt='TAA logo'
+                        height={32}
+                        width={32}
+                      />
+                      The Ant Analytics
+                    </a>
+                  </Link>
                 </div>
               </div>
               <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
