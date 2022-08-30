@@ -14,9 +14,9 @@ function classNames(...classes: string[]) {
 }
 
 const userNavigation = [
-  { name: 'Settings', href: '/setting', icon: 'UserCircleIcon' },
-  { name: 'Help', href: '/help', icon: 'InformationCircleIcon' },
-  { name: 'Sign out', href: '/api/auth/signout', icon: 'LogoutIcon' },
+  { name: 'Settings', href: '/setting', icon: UserCircleIcon },
+  { name: 'Help', href: '/help', icon: InformationCircleIcon },
+  { name: 'Sign out', href: '/api/auth/signout', icon: LogoutIcon },
 ];
 
 export default function ModernHeader() {
@@ -26,7 +26,7 @@ export default function ModernHeader() {
     <Disclosure as='nav' className='bg-white shadow'>
       {({ open }) => (
         <>
-          <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+          <div className='mx-auto px-2 sm:px-6 lg:px-8'>
             <div className='relative flex h-16 justify-between'>
               <div className='flex '>
                 <div className='flex flex-shrink-0 items-center'>
@@ -45,10 +45,12 @@ export default function ModernHeader() {
                   <div>
                     <Menu.Button className='flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
                       <span className='sr-only'>Open user menu</span>
-                      <img
+                      <Image
                         className='h-8 w-8 rounded-full'
-                        src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                        alt=''
+                        src={session?.user.image || '/'}
+                        alt='user profile image'
+                        height={32}
+                        width={32}
                       />
                       <span className='ml-2 text-xs'>{session?.user.role}</span>
                     </Menu.Button>
@@ -65,14 +67,16 @@ export default function ModernHeader() {
                     <Menu.Items className='absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                       <Menu.Item key={'name'}>
                         {({ active }) => (
-                          <p
-                            className={classNames(
-                              'block select-none px-4 py-2 text-sm text-gray-700'
-                            )}
-                          >
-                            Hi 👋, {session?.user?.name}
-                            <hr className='mt-4' />
-                          </p>
+                          <>
+                            <p
+                              className={classNames(
+                                'block select-none px-4 py-2 text-sm text-gray-700'
+                              )}
+                            >
+                              Hi 👋, {session?.user?.name}
+                            </p>
+                            <hr className='mx-auto mt-2 w-[90%]' />
+                          </>
                         )}
                       </Menu.Item>
                       {userNavigation.map((item) => (
@@ -85,10 +89,7 @@ export default function ModernHeader() {
                                 'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
-                              <Icon
-                                name={item.icon}
-                                className='mr-2 inline-flex h-4  w-4 items-center'
-                              />
+                              <item.icon className='mr-2 inline-flex h-4  w-4 items-center' />
                               {item.name}
                             </a>
                           )}
@@ -139,22 +140,3 @@ export default function ModernHeader() {
     </Disclosure>
   );
 }
-
-export const Icon = ({
-  name,
-  className,
-}: {
-  name: string;
-  className: string;
-}) => {
-  switch (name) {
-    case 'UserCircleIcon':
-      return <UserCircleIcon className={className} />;
-    case 'InformationCircleIcon':
-      return <InformationCircleIcon className={className} />;
-    case 'LogoutIcon':
-      return <LogoutIcon className={className} />;
-    default:
-      return <></>;
-  }
-};

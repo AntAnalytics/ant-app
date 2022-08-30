@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
         'blue-gray': colors.slate,
+        primary: '#FB923C',
       },
     },
   },
