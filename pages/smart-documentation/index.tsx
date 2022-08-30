@@ -1,5 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import DocumentationLayout from 'layouts/documentation';
+import ModernLayout from 'layouts/ModernLayout';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 
 import { getSession, useSession } from 'next-auth/react';
@@ -440,7 +440,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     if (data) setCompanyDetails(JSON.parse(data));
   }, []);
   return (
-    <DocumentationLayout>
+    <ModernLayout>
       <section className='flex w-full flex-col gap-4 md:flex-row'>
         <div className='flex md:basis-3/4'>
           <div className='grid w-full grid-cols-3 gap-4'>
@@ -1053,7 +1053,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
           </div>
         </div>
       )}
-    </DocumentationLayout>
+    </ModernLayout>
   );
 }
 

@@ -1,29 +1,20 @@
-import { Dialog, Disclosure, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 
 import Link from 'next/link';
 
 import {
   AdjustmentsIcon,
   BanIcon,
-  BellIcon,
-  CalendarIcon,
   CashIcon,
-  ChartBarIcon,
   DocumentDownloadIcon,
-  FolderIcon,
   HandIcon,
-  HomeIcon,
   InboxIcon,
   LinkIcon,
-  MenuAlt2Icon,
-  MenuIcon,
   QuestionMarkCircleIcon,
   SparklesIcon,
   SpeakerphoneIcon,
   SupportIcon,
   TruckIcon,
-  UsersIcon,
-  XIcon,
 } from '@heroicons/react/outline';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { useRouter } from 'next/router';
