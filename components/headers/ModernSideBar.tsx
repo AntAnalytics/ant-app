@@ -205,6 +205,7 @@ export default function ModernSideBar({
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                         'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
                       )}
+                      title={item.name}
                     >
                       <item.icon
                         className={classNames(
@@ -230,6 +231,7 @@ export default function ModernSideBar({
                             'group flex w-full items-center rounded-md py-2 pl-2 pr-1 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500'
                           )}
                           onClick={() => setSidebarOpen(true)}
+                          title={item.name}
                         >
                           <item.icon
                             className='mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
