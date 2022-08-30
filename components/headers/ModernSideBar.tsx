@@ -279,16 +279,6 @@ export default function ModernSideBar({
           sidebarOpen ? ' pl-64' : 'pl-0 md:pl-12'
         )}
       >
-        <div className='bg-white pl-1 pt-1 sm:pl-3 sm:pt-3'>
-          <button
-            type='button'
-            className='-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500'
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <span className='sr-only'>Open sidebar</span>
-            <MenuIcon className='h-6 w-6' aria-hidden='true' />
-          </button>
-        </div>
         <main className='flex-1'>
           <div className='p-6'>{children}</div>
         </main>

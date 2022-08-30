@@ -9,7 +9,7 @@ const ModernLayout: FunctionComponent<ModernLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <ModernHeader />
+      <ModernHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <ModernSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
         {children}
       </ModernSideBar>
