@@ -184,7 +184,7 @@ const ModernLayout: FunctionComponent<ModernLayoutProps> = ({ children }) => {
       <div
         className={classNames(
           'fixed mt-16 transition-all md:inset-y-0 md:flex md:flex-col',
-          sidebarOpen ? 'w-64' : 'w-12'
+          sidebarOpen ? 'w-64' : 'w-0 md:w-12'
         )}
       >
         {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -270,7 +270,7 @@ const ModernLayout: FunctionComponent<ModernLayoutProps> = ({ children }) => {
       <div
         className={classNames(
           'flex flex-1 flex-col transition-all',
-          sidebarOpen ? ' pl-64' : 'pl-12'
+          sidebarOpen ? ' pl-64' : 'pl-0 md:pl-12'
         )}
       >
         <div className='sticky top-0 z-10 bg-white pl-1 pt-1 sm:pl-3 sm:pt-3'>
