@@ -441,9 +441,9 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
   }, []);
   return (
     <ModernLayout>
-      <section className='flex w-full flex-col gap-4 md:flex-row'>
+      <section className='flex w-full flex-col gap-4 lg:flex-row'>
         <div className='flex py-6 md:basis-3/4'>
-          <div className='w-full gap-4 md:grid md:grid-cols-3'>
+          <div className='w-full gap-4 md:grid md:grid-cols-2 lg:grid-cols-3'>
             <div className='  p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
@@ -532,7 +532,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='flex gap-4 md:flex-col'>
+            <div className='flex gap-4 lg:flex-col'>
               <div className='  p-4'>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   supplier compliance
