@@ -444,7 +444,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
       <section className='flex w-full flex-col gap-4 md:flex-row'>
         <div className='flex md:basis-3/4'>
           <div className='grid w-full grid-cols-3 gap-4'>
-            <div className='rounded-lg bg-white p-4 shadow-sm'>
+            <div className='rounded-lg  p-4 shadow-sm'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
               </h2>
@@ -488,7 +488,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='rounded-lg bg-white p-4 shadow-sm'>
+            <div className='rounded-lg  p-4 shadow-sm'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Internal auditing rating
               </h2>
@@ -533,20 +533,20 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
               </div>
             </div>
             <div className='flex flex-col gap-4'>
-              <div className='rounded-lg bg-white p-4 shadow-sm'>
+              <div className='rounded-lg  p-4 shadow-sm'>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   supplier compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>91%</p>
               </div>
-              <div className='rounded-lg bg-white p-4 shadow-sm'>
+              <div className='rounded-lg  p-4 shadow-sm'>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   regular compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>89%</p>
               </div>
             </div>
-            <div className='col-span-2 rounded-lg bg-white p-4 shadow-sm'>
+            <div className='col-span-2 rounded-lg  p-4 shadow-sm'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Department compliance rating
               </h2>
@@ -580,7 +580,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='rounded-lg bg-white p-4 shadow-sm'>
+            <div className='rounded-lg  p-4 shadow-sm'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 complaints
               </h2>
@@ -690,7 +690,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 <section className='mt-8'>
                   <div className='flex flex-col gap-4 '>
                     {/* Page header */}
-                    <div className='bg-white shadow'>
+                    <div className=' shadow'>
                       <div className='px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8'>
                         <div className='py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200'>
                           <div className='min-w-0 flex-1'>
@@ -736,7 +736,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                           {/* <div className='mt-6 flex space-x-3 md:mt-0 md:ml-4'>
                           <button
                             type='button'
-                            className='inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
+                            className='inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2'
                           >
                             Add money
                           </button>
@@ -823,7 +823,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                           {/* {cards.map((card) => (
                           <div
                             key={card.name}
-                            className='overflow-hidden rounded-lg bg-white shadow'
+                            className='overflow-hidden rounded-lg  shadow'
                           >
                             <div className='p-5'>
                               <div className='flex items-center'>
@@ -876,7 +876,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                             <li key={transaction.id}>
                               <a
                                 href={transaction.href}
-                                className='block bg-white px-4 py-4 hover:bg-gray-50'
+                                className='block  px-4 py-4 hover:bg-gray-50'
                               >
                                 <span className='flex items-center space-x-4'>
                                   <span className='flex flex-1 space-x-2 truncate'>
@@ -910,19 +910,19 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                         </ul>
 
                         <nav
-                          className='flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3'
+                          className='flex items-center justify-between border-t border-gray-200  px-4 py-3'
                           aria-label='Pagination'
                         >
                           <div className='flex flex-1 justify-between'>
                             <a
                               href='#'
-                              className='relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500'
+                              className='relative inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500'
                             >
                               Previous
                             </a>
                             <a
                               href='#'
-                              className='relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500'
+                              className='relative ml-3 inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500'
                             >
                               Next
                             </a>
@@ -964,12 +964,9 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                                     </th>
                                   </tr>
                                 </thead>
-                                <tbody className='divide-y divide-gray-200 bg-white'>
+                                <tbody className='divide-y divide-gray-200 '>
                                   {transactions.map((transaction) => (
-                                    <tr
-                                      key={transaction.id}
-                                      className='bg-white'
-                                    >
+                                    <tr key={transaction.id} className=''>
                                       <td className='w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900'>
                                         <div className='flex'>
                                           <a
@@ -1014,7 +1011,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                               </table>
                               {/* Pagination */}
                               <nav
-                                className='flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6'
+                                className='flex items-center justify-between border-t border-gray-200  px-4 py-3 sm:px-6'
                                 aria-label='Pagination'
                               >
                                 <div className='hidden sm:block'>
@@ -1029,13 +1026,13 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                                 <div className='flex flex-1 justify-between sm:justify-end'>
                                   <a
                                     href='#'
-                                    className='relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                                    className='relative inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
                                   >
                                     Previous
                                   </a>
                                   <a
                                     href='#'
-                                    className='relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+                                    className='relative ml-3 inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
                                   >
                                     Next
                                   </a>

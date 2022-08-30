@@ -32,7 +32,7 @@ export default function ModernHeader({
   const { data: session } = useSession();
 
   return (
-    <Disclosure as='nav' className='bg-primary shadow'>
+    <Disclosure as='nav' className='bg-primary z-10 shadow'>
       {({ open }) => (
         <>
           <div className='mx-auto px-2 sm:pr-6 lg:pr-8'>

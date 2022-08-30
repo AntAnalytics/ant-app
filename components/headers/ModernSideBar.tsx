@@ -179,13 +179,13 @@ export default function ModernSideBar({
     <>
       <div
         className={classNames(
-          'fixed mt-16 transition-all md:inset-y-0 md:flex md:flex-col',
+          'fixed transition-all md:inset-y-0 md:flex md:flex-col',
           sidebarOpen ? 'w-64' : 'w-0 md:w-12'
         )}
       >
         <div className='flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white'>
           <div className='flex flex-1 flex-col overflow-y-auto pb-4'>
-            <nav className='flex-1 space-y-1 bg-white px-2  pt-4'>
+            <nav className='mt-16  flex-1  space-y-1 bg-white px-2  pt-4'>
               {navigation.map((item) =>
                 !item.children ? (
                   <Link key={item.name} href={item.href}>
@@ -272,7 +272,7 @@ export default function ModernSideBar({
           sidebarOpen ? ' pl-64' : 'pl-0 md:pl-12'
         )}
       >
-        <main className='flex-1'>
+        <main className='flex-1 bg-[#FFF1F2]'>
           <div className='p-6'>{children}</div>
         </main>
       </div>
