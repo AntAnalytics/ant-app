@@ -442,7 +442,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
   return (
     <ModernLayout>
       <section className='flex w-full flex-col gap-4 md:flex-row'>
-        <div className='flex md:basis-3/4'>
+        <div className='flex py-6 md:basis-3/4'>
           <div className='grid w-full grid-cols-3 gap-4'>
             <div className='rounded-lg  p-4 shadow-sm'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>

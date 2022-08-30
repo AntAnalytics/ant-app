@@ -273,7 +273,7 @@ export default function ModernSideBar({
         )}
       >
         <main className='flex-1 bg-[#FFF1F2]'>
-          <div className='p-6'>{children}</div>
+          <div className='pl-6'>{children}</div>
         </main>
       </div>
     </>
