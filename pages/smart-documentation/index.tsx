@@ -443,7 +443,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     <ModernLayout>
       <section className='flex w-full flex-col gap-4 lg:flex-row'>
         <div className='flex py-6 md:basis-3/4'>
-          <div className='mr-4 w-full gap-4 rounded-lg bg-white shadow-sm md:grid md:grid-cols-2 lg:grid-cols-3'>
+          <div className='mr-4 w-full gap-4 rounded-xl bg-white md:grid md:grid-cols-2 lg:grid-cols-3'>
             <div className='  border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
@@ -711,7 +711,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
           </div>
         </div>
         <div className='flex min-h-[100vh] md:basis-1/4'>
-          <div className='w-full  overflow-y-auto bg-white p-4 md:mr-4'>
+          <div className='mr-4  w-full overflow-y-auto bg-white p-4 lg:mr-0'>
             <h2 className=' text-lg font-medium leading-6 text-gray-900 sm:truncate'>
               Alert and Notifications
             </h2>
@@ -732,7 +732,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                         <span className='absolute inset-0' aria-hidden='true' />
                         supplier :{' '}
                         <span className='capitalize'>
-                          {approvedSupplier.supplierName}
+                          {approvedSupplier.supplierName}{' '}
                         </span>
                         with : {approvedSupplier.fssaiLicenseNo}
                         <span className='text-xs'> FSSAI License No </span>
