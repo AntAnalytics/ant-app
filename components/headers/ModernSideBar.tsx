@@ -8,6 +8,7 @@ import {
   CashIcon,
   DocumentDownloadIcon,
   HandIcon,
+  HomeIcon,
   InboxIcon,
   LinkIcon,
   QuestionMarkCircleIcon,
@@ -20,6 +21,11 @@ import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 
 const navigation = [
+  {
+    name: 'Home',
+    href: '/smart-documentation',
+    icon: HomeIcon,
+  },
   {
     name: 'Purchase',
     href: '/smart-documentation/purchase',
