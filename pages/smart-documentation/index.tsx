@@ -443,7 +443,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     <ModernLayout>
       <section className='flex w-full flex-col gap-4 lg:flex-row'>
         <div className='flex py-6 md:basis-3/4'>
-          <div className='w-full gap-4 md:grid md:grid-cols-2 lg:grid-cols-3'>
+          <div className='w-full gap-4 rounded-lg bg-white shadow-sm md:grid md:grid-cols-2 lg:grid-cols-3'>
             <div className='  p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
@@ -626,6 +626,84 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                       fill='#86EFAC'
                     ></Bar>
                     <Bar dataKey='openComplaints' stackId='a' fill='#F87171' />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className='  p-4'>
+              <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
+                Cooking temperature graph
+              </h2>
+              <div className='aspect-video h-full w-full text-xs'>
+                <ResponsiveContainer width='100%' height='90%'>
+                  <LineChart width={200} height={100} data={temperatureData}>
+                    <Tooltip />
+
+                    <Line
+                      type='monotone'
+                      dataKey='value'
+                      stroke='#8884d8'
+                      strokeWidth={2}
+                    />
+
+                    <XAxis
+                      label={{
+                        value: 'Date',
+                        // angle: -90,
+                        position: 'insideBottom',
+                        offset: 0,
+                      }}
+                    />
+
+                    <YAxis
+                      label={{
+                        value: 'Temp (c)',
+                        angle: -90,
+                        position: 'insideLeft',
+                        offset: 20,
+                      }}
+                      domain={['dataMin+2', 'dataMax+2']}
+                    />
+
+                    <ReferenceLine
+                      y={74}
+                      label='standard cooking temp 74c'
+                      stroke='#bc7fd7'
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className='col-span-2 p-4'>
+              <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
+                Department compliance rating
+              </h2>
+              <div className='text-xs'>
+                <ResponsiveContainer height={300}>
+                  <BarChart width={300} height={300} data={departmentRating}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis
+                      dataKey='name'
+                      className=''
+                      label={{
+                        value: 'Department',
+                        // angle: -90,
+                        position: 'insideBottom',
+                        offset: 0,
+                      }}
+                    />
+                    <YAxis
+                      dataKey='rating'
+                      label={{
+                        value: 'Department rating (%)',
+                        angle: -90,
+                        position: 'insideLeft',
+                        offset: 0,
+                      }}
+                      domain={['dataMin-5', 'dataMax+2']}
+                    />
+                    <Tooltip />
+                    <Bar dataKey='rating' fill='#8884d8' />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
