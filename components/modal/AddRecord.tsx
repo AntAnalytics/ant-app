@@ -71,12 +71,12 @@ export default function AddRecordModal({
                       as='h3'
                       className='text-lg font-medium leading-6 text-gray-900'
                     >
-                      Add Record
+                      Add Approved supplier
                     </Dialog.Title>
                     <div className='mt-2'>
                       <form
                         onSubmit={handleSubmit(onSubmit)}
-                        className='flex flex-col gap-y-4'
+                        className='grid grid-cols-2 gap-y-4'
                       >
                         <div className='flex '>
                           <label htmlFor='supplierName' className='w-28'>
@@ -204,10 +204,16 @@ export default function AddRecordModal({
                             required
                           />
                         </div>
-                        <div className='mt-5 sm:mt-6'>
+                        <div className='col-span-2 mt-5 flex gap-4 sm:mt-6'>
+                          <button
+                            onClick={() => setOpen(false)}
+                            className='inline-flex w-1/2 justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700  sm:text-sm'
+                          >
+                            cancel
+                          </button>
                           <button
                             type='submit'
-                            className='inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
+                            className='inline-flex w-1/2 justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm'
                           >
                             Add
                           </button>
