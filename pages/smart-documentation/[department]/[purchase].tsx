@@ -167,7 +167,7 @@ function PurchasePage({}: InferGetServerSidePropsType<
     } else {
       setRecords([]);
     }
-  });
+  }, [router.asPath]);
 
   return (
     <DocumentationLayout>
