@@ -443,8 +443,8 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
     <ModernLayout>
       <section className='flex w-full flex-col gap-4 lg:flex-row'>
         <div className='flex py-6 md:basis-3/4'>
-          <div className='w-full gap-4 rounded-lg bg-white shadow-sm md:grid md:grid-cols-2 lg:grid-cols-3'>
-            <div className='  p-4'>
+          <div className='mr-4 w-full gap-4 rounded-lg bg-white shadow-sm md:grid md:grid-cols-2 lg:grid-cols-3'>
+            <div className='  border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
               </h2>
@@ -488,7 +488,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='  p-4'>
+            <div className='  border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Internal auditing rating
               </h2>
@@ -532,21 +532,21 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='flex gap-4 lg:flex-col'>
-              <div className='  p-4'>
+            <div className='flex gap-4 border-r-2 border-b-2 p-4 lg:flex-col'>
+              <div className=''>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   supplier compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>91%</p>
               </div>
-              <div className='  p-4'>
+              <div className=''>
                 <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                   regular compliance
                 </h2>
                 <p className='text-3xl font-extrabold '>89%</p>
               </div>
             </div>
-            <div className='col-span-2   p-4'>
+            <div className='col-span-2   border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Department compliance rating
               </h2>
@@ -580,7 +580,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='  p-4'>
+            <div className='  border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 complaints
               </h2>
@@ -630,7 +630,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='  p-4'>
+            <div className='  border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Cooking temperature graph
               </h2>
@@ -674,7 +674,7 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className='col-span-2 p-4'>
+            <div className='col-span-2 border-r-2 border-b-2 p-4'>
               <h2 className=' text-base font-medium leading-6 text-gray-900 sm:truncate'>
                 Department compliance rating
               </h2>
@@ -710,8 +710,8 @@ function SmartDocumentationPage({}: InferGetServerSidePropsType<
             </div>
           </div>
         </div>
-        <div className='flex max-h-[100vh] md:basis-1/4'>
-          <div className='overflow-y-auto  bg-white p-4'>
+        <div className='flex min-h-[100vh] md:basis-1/4'>
+          <div className='w-full  overflow-y-auto bg-white p-4 md:mr-4'>
             <h2 className=' text-lg font-medium leading-6 text-gray-900 sm:truncate'>
               Alert and Notifications
             </h2>
