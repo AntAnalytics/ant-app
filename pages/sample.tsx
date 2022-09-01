@@ -33,7 +33,7 @@ const SamplePage: NextPage = () => {
     () => [
       {
         Header: 'supplier',
-        accessor: 'supplierName', // accessor is the "key" in the data
+        accessor: 'supplierName',
         sortType: 'basic',
       },
       {

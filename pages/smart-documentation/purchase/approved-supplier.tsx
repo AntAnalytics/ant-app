@@ -360,8 +360,10 @@ function ApprovedSupplierPage({}: InferGetServerSidePropsType<
       </div>
 
       <style jsx>{`
-        td {
-          width: clamp(50px, 100%, 200px);
+        td,
+        th {
+          min-width: 50px;
+          max-width: 150px;
         }
       `}</style>
     </ModernLayout>

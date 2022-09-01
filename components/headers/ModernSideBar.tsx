@@ -223,7 +223,7 @@ export default function ModernSideBar({
                         <Disclosure.Button
                           className={classNames(
                             router.asPath.includes(item.href)
-                              ? 'bg-gray-900 text-gray-100'
+                              ? 'ring-primary bg-gray-900 text-gray-100 ring-1'
                               : 'text-gray-50 hover:bg-gray-600 hover:text-gray-100',
                             'group flex w-full items-center rounded-md py-2 pl-2 pr-1 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500'
                           )}
